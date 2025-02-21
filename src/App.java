@@ -15,7 +15,7 @@ public class App extends Application {
 		// TODO Auto-generated method stub
 		HBox root = new HBox();
 		root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-		Scene scene = new Scene(root, 400, 200);
+		Scene scene = new Scene(root, 1100, 700);
 		
 		root.setOnMouseClicked((e) -> {
 			double x = e.getX();
