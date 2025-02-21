@@ -59,6 +59,7 @@ public class App extends Application {
         Scene scene = new Scene(root, 900, 650);
         primaryStage.setTitle("JavaFX Background Example");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
