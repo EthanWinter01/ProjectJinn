@@ -1,3 +1,5 @@
+package scene;
+
 
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -16,7 +18,7 @@ import javafx.stage.Stage; // Import Stage
 public class NewScene {
 
 	private static Color color[] = {Color.DARKGRAY, Color.RED, Color.GREEN, Color.YELLOW, Color.BLUE, Color.PINK};
-	private static String back[] = {"startBackgroud", "pop", "printer1", "printer2", "toilet1", "toilet2", "toilet3"};
+	private static String back[] = {"startBackground", "pop", "printer1", "printer2", "toilet1", "toilet2", "toilet3"};
 	
     private Scene scene; // Store the scene
     private ImageView imageView; // ทำตัวเหมือนปุ่ม // act like button

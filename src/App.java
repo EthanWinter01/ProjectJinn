@@ -1,4 +1,5 @@
 
+import scene.NewScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -25,7 +26,7 @@ public class App extends Application {
 	      scene5.setNext(primaryStage, scene6.getScene());
 	      scene6.setNext(primaryStage, scene0.getScene());
 	      
-	      primaryStage.setScene(scene0.getScene()); // Start with Scene1
+	      primaryStage.setScene(scene0.getScene()); 
 	      primaryStage.setTitle("Scene Switching Example");
 	      primaryStage.show();
 	  }	

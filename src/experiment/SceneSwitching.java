@@ -1,5 +1,8 @@
+package experiment;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import scene.NewScene;
 
 public class SceneSwitching extends Application {
 
