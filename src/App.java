@@ -1,34 +1,3 @@
-//import javafx.application.Application;
-//import javafx.geometry.Insets;
-//import javafx.scene.Scene;
-//import javafx.scene.layout.Background;
-//import javafx.scene.layout.BackgroundFill;
-//import javafx.scene.layout.CornerRadii;
-//import javafx.scene.layout.HBox;
-//import javafx.scene.paint.Color;
-//import javafx.stage.Stage;
-//
-//public class App extends Application {
-//
-//	@Override
-//	public void start(Stage stage) throws Exception {
-//		// TODO Auto-generated method stub
-//		HBox root = new HBox();
-//		root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-//		Scene scene = new Scene(root, 900, 650);
-//		
-//		root.setOnMouseClicked((e) -> {
-//			double x = e.getX();
-//			double y = e.getY();
-//			System.out.println("x = " + x + ", y = " + y);
-//		});
-//		
-//		stage.setScene(scene);
-//		stage.setTitle("SaaYoong");
-//		stage.show();
-//		
-//	}
-
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -37,40 +6,31 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class App extends Application {
-    @Override
-    public void start(Stage primaryStage) {
-        // Load the image
-        Image backgroundImage = new Image("900X650 BG.png"); // Change the path
+	@Override
+	  public void start(Stage primaryStage) {
+	      // Create Scene2 *before* Scene1 because Scene1 needs it.
+		  NewScene scene0 = new NewScene(0); // Pass the scene
+	      NewScene scene1 = new NewScene(1); // scene1 will be set later
+	      NewScene scene2 = new NewScene(2); // Pass the scene
+	      NewScene scene3 = new NewScene(3); // Pass the scene
+	      NewScene scene4 = new NewScene(4); // Pass the scene
+	      NewScene scene5 = new NewScene(5); // Pass the scene
+	      NewScene scene6 = new NewScene(6); // Pass the scene
 
-        // Create a BackgroundImage
-        BackgroundImage background = new BackgroundImage(
-            backgroundImage,
-            BackgroundRepeat.NO_REPEAT, 
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.CENTER,
-            new BackgroundSize(100, 100, true, true, true, false)
-        );
-
-        // Create a Pane and set the background
-        Pane root = new Pane();
-        root.setBackground(new Background(background));
-
-        // Create Scene and Stage
-        Scene scene = new Scene(root, 900, 650);
-        primaryStage.setTitle("JavaFX Background Example");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-    }
+	      scene0.setNext(primaryStage, scene1.getScene());
+	      scene1.setNext(primaryStage, scene2.getScene());
+	      scene2.setNext(primaryStage, scene3.getScene());
+	      scene3.setNext(primaryStage, scene4.getScene());
+	      scene4.setNext(primaryStage, scene5.getScene());
+	      scene5.setNext(primaryStage, scene6.getScene());
+	      scene6.setNext(primaryStage, scene0.getScene());
+	      
+	      primaryStage.setScene(scene0.getScene()); // Start with Scene1
+	      primaryStage.setTitle("Scene Switching Example");
+	      primaryStage.show();
+	  }	
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
-//	
-//	public static void main(String[] args) {
-//		launch(args);
-//	}
-//
-//}
