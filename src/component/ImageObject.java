@@ -6,16 +6,21 @@ import javafx.scene.image.ImageView;
 
 public class ImageObject extends ImageView {
 	
-	public ImageObject(Image img) {
-		super(img);
+	public ImageObject(String file) {
+		super(new Image(ClassLoader.getSystemResource(file).toString()));
 		this.setFitWidth(900);  
         this.setFitHeight(650); 
         this.setPreserveRatio(true); 
         this.setCursor(Cursor.HAND);
+        setPosition(0, 0);
+        
+        this.setOnMouseClicked(event -> {
+        	System.out.println("click " + file);
+        });
 	}
 	
-	public ImageObject(Image img, double x, double y) {
-		this(img);
+	public ImageObject(String file, double x, double y) {
+		this(file);
 		setPosition(x, y);
 	}
 	
