@@ -5,11 +5,11 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import logic.GameLogic;
 
-public class StartScene extends ScenePane {
+public class Scene0 extends ScenePane {
 
 	private ImageObject start;
 	
-	public StartScene() {
+	public Scene0() {
 		super("home/home.png");
 		   	
     	start = new ImageObject("home/start.png", 600, 460);
@@ -26,13 +26,7 @@ public class StartScene extends ScenePane {
     	
     	this.getChildren().addAll(start, label, tree, building);
     	this.overall = new Scene(this, 900, 650);
-    	next();
-	}
-	
-	@Override
-	public void next() {
-		// TODO Auto-generated method stub
-		start.setOnMouseEntered(event -> {
+    	start.setOnMouseEntered(event -> {
     		start.setOpacity(1); // Make the image fully visible
             start.setCursor(Cursor.HAND);
     	});
@@ -43,6 +37,11 @@ public class StartScene extends ScenePane {
     		start.setOpacity(0); 
             start.setCursor(Cursor.DEFAULT);
     	});
+	}
+	
+	@Override
+	public void next() {
+		
 	}
 
 }

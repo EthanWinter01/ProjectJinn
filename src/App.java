@@ -1,19 +1,20 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logic.GameLogic;
-import scene.PopScene;
-import scene.StartScene;
+import scene.*;
 
 public class App extends Application {
 	@Override
 	  public void start(Stage primaryStage) {
 		  GameLogic.setStage(primaryStage);
 		  
-		  PopScene scene1 = new PopScene();
-		  StartScene scene0 = new StartScene();
+		  Scene0 scene0 = new Scene0();
+		  Scene1_1 scene1_1 = new Scene1_1();
+		  Scene1_2 scene1_2 = new Scene1_2();
 		  
-		  scene0.setNextScene(scene1);
-		  scene1.setNextScene(scene1);
+		  scene0.setNextScene(scene1_1);
+		  scene1_1.setNextScene(scene1_2);
+		  scene1_2.setNextScene(scene1_1);
 		  
 	      primaryStage.setScene(scene0.getOverall()); 
 	      primaryStage.setTitle("Scene");
