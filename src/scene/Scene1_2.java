@@ -3,6 +3,7 @@ package scene;
 import component.ImageObject;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
+import logic.GameLogic;
 
 public class Scene1_2 extends ScenePane {
 
@@ -27,6 +28,9 @@ public class Scene1_2 extends ScenePane {
 		});
 		chair.setOnMouseClicked(event -> {
 			this.getChildren().add(ghost);
+		});
+		busbell.setOnMouseClicked(event -> {
+			GameLogic.getStage().setScene(this.nextScene);
 		});
 		
 		this.overall = new Scene(this, 900, 650);
