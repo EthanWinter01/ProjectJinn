@@ -14,8 +14,12 @@ public abstract class ScenePane extends Pane {
 	protected Scene overall;
 	protected Scene nextScene;
 	
-	public ScenePane(String file) {
-		Image backgroundImage = new Image(ClassLoader.getSystemResource(file).toString());
+	public ScenePane(String fileName) {		
+    	this.setBackground(createBackground(fileName));
+	}
+	
+	public Background createBackground(String fileName) {
+		Image backgroundImage = new Image(ClassLoader.getSystemResource(fileName).toString());
     	BackgroundImage background = new BackgroundImage(
     			backgroundImage,
     			BackgroundRepeat.NO_REPEAT, 
@@ -23,7 +27,7 @@ public abstract class ScenePane extends Pane {
     			BackgroundPosition.CENTER,
     			new BackgroundSize(100, 100, true, true, true, false)
 		);
-    	this.setBackground(new Background(background));
+    	return new Background(background);
 	}
 	
 	public Scene getOverall() {
