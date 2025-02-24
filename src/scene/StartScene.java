@@ -10,17 +10,17 @@ public class StartScene extends ScenePane {
 	private ImageObject start;
 	
 	public StartScene() {
-		super("startBackground.png");
+		super("home/home.png");
 		   	
-    	start = new ImageObject("start.png", 600, 460);
+    	start = new ImageObject("home/start.png", 600, 460);
     	start.setFitWidth(300);
     	start.setFitHeight(300);
 //    	start.setPosition(600, 460);
     	start.setOpacity(0);
 
-    	ImageObject label = new ImageObject("faculty-label.png", 1, 1);
-    	ImageObject tree = new ImageObject("tree.png");
-    	ImageObject building = new ImageObject("building.png", 0, -0.3);
+    	ImageObject label = new ImageObject("home/label.png");
+    	ImageObject tree = new ImageObject("home/tree.png");
+    	ImageObject building = new ImageObject("home/building.png");
     	
     	
     	
