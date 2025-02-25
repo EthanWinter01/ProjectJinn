@@ -10,11 +10,11 @@ public class Scene1_1 extends ScenePane {
 	
 	public Scene1_1() {
 		super("scene1/BG_scene1_1.png");
-		building = new ImageObject("scene1/building.png");
-		bushtree = new ImageObject("scene1/bushtree.png");
-		bus = new ImageObject("scene1/bus.png");
-		text = new ImageObject("scene1/text.png");
-		doorofbus = new ImageObject("scene1/doorofbus.png");
+		building = new ImageObject("scene1/object/building.png");
+		bushtree = new ImageObject("scene1/object/bushtree.png");
+		bus = new ImageObject("scene1/object/bus.png");
+		text = new ImageObject("scene1/object/text.png");
+		doorofbus = new ImageObject("scene1/object/doorofbus.png");
 		
 		this.getChildren().addAll(building, bushtree, bus, doorofbus, text);
 		

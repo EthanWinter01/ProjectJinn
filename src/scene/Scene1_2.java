@@ -17,11 +17,11 @@ public class Scene1_2 extends ScenePane {
 		backgrounds[0] = getBackground();
 		backgrounds[1] = createBackground("scene1/BG_scene1_2_dark.png");
 		
-		busbell = new ImageObject("scene1/busbell.png");
-		chair = new ImageObject("scene1/chair.png");
-		ghost = new ImageObject("scene1/ghost.png");
-		hands = new ImageObject("scene1/hands.png");
-		mirror = new ImageObject("scene1/mirror.png");
+		busbell = new ImageObject("scene1/object/busbell.png");
+		chair = new ImageObject("scene1/object/chair.png");
+		ghost = new ImageObject("scene1/object/ghost.png");
+		hands = new ImageObject("scene1/object/hands.png");
+		mirror = new ImageObject("scene1/object/mirror.png");
 		
 		this.getChildren().addAll(mirror, chair, busbell);
 		mirror.setOnMouseClicked(event -> {
