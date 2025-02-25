@@ -26,6 +26,7 @@ public abstract class ScenePane extends Pane {
     			BackgroundRepeat.NO_REPEAT,
     			BackgroundPosition.CENTER,
     			new BackgroundSize(100, 100, true, true, true, false)
+//    			new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, false)
 		);
     	return new Background(background);
 	}
