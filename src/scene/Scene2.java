@@ -19,17 +19,17 @@ public class Scene2 extends ScenePane {
 			backgroundList.add(createBackground("scene2/BG_scene2_2_" + bg[i] + ".png"));
 		}
 		
-		text = new ImageObject("scene2/text.png");
-		printer = new ImageObject("scene2/printer.png");
-		hi = new ImageObject("scene2/hi.png");
-		cheater = new ImageObject("scene2/cheater.png");
-		paper = new ImageObject("scene2/paper.png");
-		ready = new ImageObject("scene2/ready.png");
-		doubleA = new ImageObject("scene2/doubleA.png");
-		smile_1 = new ImageObject("scene2/smile_1.png");
-		smile_2 = new ImageObject("scene2/smile_2.png");
-		smile_3 = new ImageObject("scene2/smile_3.png");
-		smile_4 = new ImageObject("scene2/smile_4.png");
+		text = new ImageObject("scene2/object/text.png");
+		printer = new ImageObject("scene2/object/printer.png");
+		hi = new ImageObject("scene2/object/hi.png");
+		cheater = new ImageObject("scene2/object/cheater.png");
+		paper = new ImageObject("scene2/object/paper.png");
+		ready = new ImageObject("scene2/object/ready.png");
+		doubleA = new ImageObject("scene2/object/doubleA.png");
+		smile_1 = new ImageObject("scene2/object/smile_1.png");
+		smile_2 = new ImageObject("scene2/object/smile_2.png");
+		smile_3 = new ImageObject("scene2/object/smile_3.png");
+		smile_4 = new ImageObject("scene2/object/smile_4.png");
 		
 		this.getChildren().addAll(printer);
 		
