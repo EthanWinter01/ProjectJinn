@@ -50,7 +50,6 @@ public class Scene1_2 extends ScenePane {
 	                Platform.runLater(() -> {
 	                	busbell.setOpacity(1);
 	                	mirror.setOpacity(1);
-//	                	ghost.setOpacity(0);
 	                    setBackground(backgrounds[0]);
 	                });
 
@@ -59,7 +58,6 @@ public class Scene1_2 extends ScenePane {
 	                Platform.runLater(() -> {
 	                	busbell.setOpacity(0);
 	                	mirror.setOpacity(0);
-//	                	ghost.setOpacity(1);
 	                    setBackground(backgrounds[1]);
 	                });
 
