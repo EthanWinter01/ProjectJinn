@@ -35,10 +35,9 @@ public class Scene1_2 extends ScenePane {
 		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(1.5), fadeOverlay);
         sceneFadeIn.setFromValue(1.0); 
         sceneFadeIn.setToValue(0.0);   
-        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
+        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); 
         sceneFadeIn.play();
 		
-//		this.getChildren().addAll(mirror, chair, busbell);
 		mirror.setOnMouseClicked(event -> {
 			this.getChildren().add(hands);
 		});

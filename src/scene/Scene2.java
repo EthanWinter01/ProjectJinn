@@ -21,8 +21,4 @@ public class Scene2 extends ScenePane {
 		this.overall = new Scene(this, 900, 650);
 	}
 
-	@Override
-	public void next() {
-		
-	}
 }
