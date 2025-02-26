@@ -32,14 +32,10 @@ public class Scene1_1 extends ScenePane {
         sceneFadeIn.play(); 
         startTextFade(text);
 		
-		bus.setOnMouseClicked(event -> {
-    		bus.onClick();
-    	});
+        bushtree.setOnMouseClicked(	event -> { bushtree.onClick(); 	});
+        bus.setOnMouseClicked(		event -> { bus.onClick(); 		});
+		building.setOnMouseClicked(	event -> { building.onClick(); 	});
 		
-		building.setOnMouseClicked(event -> {
-    		building.onClick();
-    	});
-		System.out.println("Hello1");
 		doorofbus.setOnMouseClicked(event -> {
 			new Thread(() -> {
 				try {
@@ -47,11 +43,9 @@ public class Scene1_1 extends ScenePane {
 	    	    } catch (InterruptedException e) {
 	    	        e.printStackTrace();
 	    	    }
-				System.out.println("Hello2");
 	    	    Platform.runLater(() -> {
 	    	    	System.out.println(this.getScene());
 	    	    	this.setNextScene(new Scene1_2());
-	    	    	System.out.println("Hello4");
 	    	    	if (this.nextScene != null) { // Ensure nextScene is not null
 	    	    		GameLogic.getStage().setScene(this.nextScene);
 	    	    	} else {
