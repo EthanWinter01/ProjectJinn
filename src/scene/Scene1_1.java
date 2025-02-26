@@ -6,7 +6,6 @@ import component.NoisyObject;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
