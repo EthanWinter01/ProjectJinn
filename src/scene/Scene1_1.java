@@ -16,8 +16,8 @@ public class Scene1_1 extends ScenePane {
 	
 	public Scene1_1() {
 		super("scene1/BG_scene1_1.png");
-		ImageObject building = new ImageObject("scene1/object/building.png");
-		ImageObject bushtree = new ImageObject("scene1/object/bushtree.png");
+		NoisyObject building = new NoisyObject("scene1/object/building.png", "scene1/sound/crow.mp3");
+		NoisyObject bushtree = new NoisyObject("scene1/object/bushtree.png", "scene1/sound/treemove.mp3");
 		NoisyObject bus = new NoisyObject("scene1/object/bus.png", "scene1/sound/car/car-horn1.mp3");
 		ImageObject text = new ImageObject("scene1/object/text.png");
 		NoisyObject doorofbus = new NoisyObject("scene1/object/doorofbus.png", "scene1/sound/bus_door.mp3");
@@ -37,6 +37,10 @@ public class Scene1_1 extends ScenePane {
     		bus.onClick();
     	});
 		
+		building.setOnMouseClicked(event -> {
+    		building.onClick();
+    	});
+		System.out.println("Hello1");
 		doorofbus.setOnMouseClicked(event -> {
 			new Thread(() -> {
 				try {
@@ -44,8 +48,11 @@ public class Scene1_1 extends ScenePane {
 	    	    } catch (InterruptedException e) {
 	    	        e.printStackTrace();
 	    	    }
+				System.out.println("Hello2");
 	    	    Platform.runLater(() -> {
+	    	    	System.out.println(this.getScene());
 	    	    	this.setNextScene(new Scene1_2());
+	    	    	System.out.println("Hello4");
 	    	    	if (this.nextScene != null) { // Ensure nextScene is not null
 	    	    		GameLogic.getStage().setScene(this.nextScene);
 	    	    	} else {
@@ -68,10 +75,4 @@ public class Scene1_1 extends ScenePane {
         fadeOut.play();
     }
 	
-	@Override
-	public void next() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

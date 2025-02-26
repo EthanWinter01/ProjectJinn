@@ -38,7 +38,7 @@ public class Scene1_2 extends ScenePane {
         sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
         sceneFadeIn.play();
 		
-		this.getChildren().addAll(mirror, chair, busbell);
+//		this.getChildren().addAll(mirror, chair, busbell);
 		mirror.setOnMouseClicked(event -> {
 			this.getChildren().add(hands);
 		});
@@ -93,10 +93,5 @@ public class Scene1_2 extends ScenePane {
 		
 	}
 
-	@Override
-	public void next() {
-		// TODO Auto-generated method stub
-
-	}
 	
 }

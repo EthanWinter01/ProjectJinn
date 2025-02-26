@@ -55,6 +55,4 @@ public abstract class ScenePane extends Pane {
 		this.nextScene = nextScene.getOverall();
 	}
 	
-	public abstract void next();
-	
 }
