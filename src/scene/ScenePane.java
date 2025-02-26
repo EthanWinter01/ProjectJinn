@@ -1,6 +1,7 @@
 package scene;
 
 import component.BackgroundMusic;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -9,6 +10,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public abstract class ScenePane extends Pane {
 	
@@ -22,6 +25,7 @@ public abstract class ScenePane extends Pane {
 	}
 	
 	public Background createBackground(String fileName) {
+		
 		Image backgroundImage = new Image(ClassLoader.getSystemResource(fileName).toString());
     	BackgroundImage background = new BackgroundImage(
     			backgroundImage,

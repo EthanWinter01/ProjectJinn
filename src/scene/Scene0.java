@@ -1,6 +1,7 @@
 package scene;
 
 import component.BackgroundMusic;
+import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.application.Platform;
@@ -35,8 +36,9 @@ public class Scene0 extends ScenePane {
     	building.setOnMouseClicked(event -> {
     		building.onClick();
     	});
-  
-    	this.getChildren().addAll(start, label, tree, building);
+    	
+    	Blinker blinker = new Blinker();
+    	this.getChildren().addAll(start, label, tree, building, blinker.getBlinker());
     	this.overall = new Scene(this, 900, 650);
     	
     	start.setOnMouseEntered(event -> {
@@ -57,6 +59,7 @@ public class Scene0 extends ScenePane {
     	        Platform.runLater(() -> {
     	            if (this.nextScene != null) { // Ensure nextScene is not null
     	                GameLogic.getStage().setScene(this.nextScene);
+    	                tree.onClick();
     	            } else {
     	                System.err.println("Next scene is not set!");
     	            }

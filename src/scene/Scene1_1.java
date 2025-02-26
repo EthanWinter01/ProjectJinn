@@ -2,7 +2,9 @@ package scene;
 
 import component.ImageObject;
 import component.NoisyObject;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
+import javafx.util.Duration;
 import logic.GameLogic;
 
 public class Scene1_1 extends ScenePane {
@@ -16,10 +18,27 @@ public class Scene1_1 extends ScenePane {
 		NoisyObject doorofbus = new NoisyObject("scene1/object/doorofbus.png", "scene1/sound/bus_door.mp3");
 
 		this.getChildren().addAll(building, bushtree, bus, doorofbus, text);
+	
+		FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), text);
+		fadeOut.setFromValue(1.0);
+		fadeOut.setToValue(0.0);
+		fadeOut.setDelay(Duration.seconds(5));
+		fadeOut.play();
+		    
+		fadeOut.setOnFinished(eventII -> {
+			this.getChildren().remove(text); // Removes text after fading
+		});
+		
+		bus.setOnMouseClicked(event -> {
+    		bus.onClick();
+    	});
 		
 		doorofbus.setOnMouseClicked(event -> {
+			doorofbus.onClick();
 			GameLogic.getStage().setScene(this.nextScene);
 		});
+		
+		
 		
 		this.overall = new Scene(this, 900, 650);
 	}

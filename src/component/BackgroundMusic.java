@@ -11,11 +11,10 @@ public class BackgroundMusic {
     private static MediaPlayer mediaPlayer;
 
     public static void playMusic(String soundFilePath) {
-        stopMusic(); // Stop any existing music before starting a new one
+        stopMusic(); 
 
         URL soundUrl = ClassLoader.getSystemResource(soundFilePath);
         if (soundUrl != null) {
-        	System.out.println("1");
             Media sound = new Media(soundUrl.toString());
             mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.setVolume(0.3);
@@ -51,7 +50,7 @@ public class BackgroundMusic {
         }
     }
 
-    public static void setVolume(double volume) { // Volume from 0.0 to 1.0
+    public static void setVolume(double volume) { 
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume);
         }
