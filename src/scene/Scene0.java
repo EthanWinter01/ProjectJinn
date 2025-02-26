@@ -47,7 +47,7 @@ public class Scene0 extends ScenePane {
 	    });
 	   	start.setOnMouseExited(event -> {
 	    	start.setOpacity(0); 
-	            start.setCursor(Cursor.DEFAULT);
+	        start.setCursor(Cursor.DEFAULT);
 	    });
     	start.setOnMouseClicked(event -> {
     	    new Thread(() -> {
@@ -57,8 +57,9 @@ public class Scene0 extends ScenePane {
     	            e.printStackTrace();
     	        }
     	        Platform.runLater(() -> {
+    	        	this.setNextScene(new Scene1_1());
     	            if (this.nextScene != null) { // Ensure nextScene is not null
-    	                GameLogic.getStage().setScene(this.nextScene);
+    	            	GameLogic.getStage().setScene(this.nextScene);
     	                tree.onClick();
     	            } else {
     	                System.err.println("Next scene is not set!");

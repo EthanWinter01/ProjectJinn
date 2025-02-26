@@ -1,9 +1,14 @@
 package scene;
 
+import component.Blinker;
 import component.ImageObject;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import logic.GameLogic;
 
 public class Scene1_2 extends ScenePane {
@@ -22,6 +27,16 @@ public class Scene1_2 extends ScenePane {
 		ghost = new ImageObject("scene1/object/ghost.png");
 		hands = new ImageObject("scene1/object/hands.png");
 		mirror = new ImageObject("scene1/object/mirror.png");
+		
+		Blinker blinker = new Blinker();
+		Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+		this.getChildren().addAll(mirror, chair, busbell, blinker.getBlinker(), fadeOverlay);
+	
+		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(1.5), fadeOverlay);
+        sceneFadeIn.setFromValue(1.0); 
+        sceneFadeIn.setToValue(0.0);   
+        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
+        sceneFadeIn.play();
 		
 		this.getChildren().addAll(mirror, chair, busbell);
 		mirror.setOnMouseClicked(event -> {

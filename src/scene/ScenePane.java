@@ -1,17 +1,18 @@
 package scene;
 
 import component.BackgroundMusic;
-import javafx.application.Platform;
+import component.ImageObject;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public abstract class ScenePane extends Pane {
 	
@@ -35,6 +36,15 @@ public abstract class ScenePane extends Pane {
     			new BackgroundSize(100, 100, true, true, true, false)
 		);
     	return new Background(background);
+	}
+	
+	private void startFadeEffect(ImageView object) {
+		FadeTransition fadeOut = new FadeTransition(Duration.seconds(3), object);
+	    fadeOut.setFromValue(1.0);
+	    fadeOut.setToValue(0.0);
+	    fadeOut.setDelay(Duration.seconds(5)); // Wait 5 seconds before fading
+	    fadeOut.setOnFinished(e -> object.setVisible(false)); // Hide text after fading
+	    fadeOut.play();
 	}
 	
 	public Scene getOverall() {
