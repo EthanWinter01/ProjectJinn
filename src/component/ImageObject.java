@@ -29,4 +29,15 @@ public class ImageObject extends ImageView {
 		this.setLayoutY(y);
 	}
 	
+
+	public void open() {
+		this.setOpacity(1.0);
+		this.setMouseTransparent(false);
+	}
+	
+	public void close() {
+		this.setOpacity(0.0);
+		this.setMouseTransparent(true);
+	}
+	
 }

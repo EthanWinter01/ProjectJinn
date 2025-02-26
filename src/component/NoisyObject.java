@@ -12,6 +12,10 @@ public class NoisyObject extends ImageObject{
 	private boolean isPlaying = false;
 
 	public NoisyObject(String fileName, String voiceName) {
+		this(fileName, voiceName, 2000);
+	}
+	
+	public NoisyObject(String fileName, String voiceName, int pause) {
 		super(fileName);
 		URL soundUrl = ClassLoader.getSystemResource(voiceName);
 	    if (soundUrl != null) {
@@ -19,7 +23,7 @@ public class NoisyObject extends ImageObject{
 	        noise.setOnEndOfMedia(() -> {
 	        	new Thread(() -> {
 	        		try {
-	        			Thread.sleep(2000);
+	        			Thread.sleep(pause);
 	        		} catch (InterruptedException e){
 	        			e.printStackTrace();
 	        		}
