@@ -1,5 +1,6 @@
 package scene;
 
+import component.BackgroundMusic;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -13,9 +14,11 @@ public abstract class ScenePane extends Pane {
 	
 	protected Scene overall;
 	protected Scene nextScene;
+	protected BackgroundMusic backgroundMusic;
 	
 	public ScenePane(String fileName) {		
     	this.setBackground(createBackground(fileName));
+    	this.backgroundMusic = null;
 	}
 	
 	public Background createBackground(String fileName) {
@@ -26,7 +29,6 @@ public abstract class ScenePane extends Pane {
     			BackgroundRepeat.NO_REPEAT,
     			BackgroundPosition.CENTER,
     			new BackgroundSize(100, 100, true, true, true, false)
-//    			new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, false)
 		);
     	return new Background(background);
 	}
@@ -40,4 +42,5 @@ public abstract class ScenePane extends Pane {
 	}
 	
 	public abstract void next();
+	
 }

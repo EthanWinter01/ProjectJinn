@@ -18,7 +18,7 @@ public class ImageObject extends ImageView {
         this.setCursor(Cursor.HAND);
         setPosition(0, 0);
 	}
-	
+
 	public ImageObject(String fileName, double x, double y) {
 		this(fileName);
 		setPosition(x, y);

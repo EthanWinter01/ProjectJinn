@@ -23,8 +23,6 @@ public class Scene2 extends ScenePane {
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
-
+		
 	}
-
 }
