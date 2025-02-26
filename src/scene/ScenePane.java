@@ -23,6 +23,7 @@ public abstract class ScenePane extends Pane {
 	public ScenePane(String fileName) {		
     	this.setBackground(createBackground(fileName));
     	this.backgroundMusic = null;
+    	overall = new Scene(this, 900, 650);
 	}
 	
 	public Background createBackground(String fileName) {
