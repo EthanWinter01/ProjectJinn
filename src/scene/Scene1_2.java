@@ -1,7 +1,5 @@
 package scene;
 
-import java.util.concurrent.DelayQueue;
-
 import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
