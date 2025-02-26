@@ -39,15 +39,6 @@ public abstract class ScenePane extends Pane {
     	return new Background(background);
 	}
 	
-	private void startFadeEffect(ImageView object) {
-		FadeTransition fadeOut = new FadeTransition(Duration.seconds(3), object);
-	    fadeOut.setFromValue(1.0);
-	    fadeOut.setToValue(0.0);
-	    fadeOut.setDelay(Duration.seconds(5)); // Wait 5 seconds before fading
-	    fadeOut.setOnFinished(e -> object.setVisible(false)); // Hide text after fading
-	    fadeOut.play();
-	}
-	
 	public Scene getOverall() {
 		return overall;
 	}
@@ -56,4 +47,12 @@ public abstract class ScenePane extends Pane {
 		this.nextScene = nextScene.getOverall();
 	}
 	
+	protected void startTextFade(ImageObject text) {
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), text);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+        fadeOut.setDelay(Duration.seconds(5));
+        fadeOut.setOnFinished(event -> this.getChildren().remove(text)); // Remove text after fade
+        fadeOut.play();
+    }
 }

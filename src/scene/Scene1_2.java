@@ -52,7 +52,7 @@ public class Scene1_2 extends ScenePane {
         mirror.setOnMouseClicked(event -> handleMirrorClick());
         busbell.setOnMouseClicked(event -> handleBusbellClick());
         
-        this.overall = new Scene(this, 900, 650);
+//      this.overall = new Scene(this, 900, 650);
     }
 
     private void handleChairClick() {
@@ -61,7 +61,7 @@ public class Scene1_2 extends ScenePane {
             sceneBlink(10);
         }
         
-        if (chairClicked && mirrorClicked && blinked) {
+        if (chairClicked && mirrorClicked && blinked && !ghostAppeared) {
             ghost.setOpacity(1.0);
             ghost.onClick();
             FadeTransition ghostFadeOut = new FadeTransition(Duration.seconds(0.1),  ghost) ;

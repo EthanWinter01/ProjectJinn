@@ -6,7 +6,6 @@ import component.ImageObject;
 import component.NoisyObject;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import logic.GameLogic;
 
 public class Scene0 extends ScenePane {
@@ -39,7 +38,6 @@ public class Scene0 extends ScenePane {
     	
     	Blinker blinker = new Blinker();
     	this.getChildren().addAll(start, label, tree, building, blinker.getBlinker());
-    	this.overall = new Scene(this, 900, 650);
     	
     	start.setOnMouseEntered(event -> {
 	   		start.setOpacity(1); // Make the image fully visible

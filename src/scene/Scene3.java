@@ -2,11 +2,14 @@ package scene;
 
 import java.util.ArrayList;
 
+import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import logic.GameLogic;
 
@@ -14,7 +17,7 @@ public class Scene3 extends ScenePane {
 
 	private ArrayList<Background> backgroundList;
 	private int i = 0;
-	private ImageObject bg1_sink, crack, faucet, oneghost, optionalghost, text, tryme, urinal;
+	private ImageObject bg1_sink, crack, faucet, oneghost, optionalghost, text, tryMe, urinal;
 	public Scene3() {
 		super("scene3/BG_scene3_1.png");
 		// TODO Auto-generated constructor stub
@@ -32,10 +35,26 @@ public class Scene3 extends ScenePane {
 		oneghost = new ImageObject("scene3/object/oneghost.png");
 		optionalghost = new ImageObject("scene3/object/optionalghost.png");
 		text = new ImageObject("scene3/object/text.png");
-		tryme = new ImageObject("scene3/object/tryme.png");
+		tryMe = new ImageObject("scene3/object/tryme.png");
 		urinal = new ImageObject("scene3/object/urinal.png");
 
-		this.getChildren().add(bg1_sink);
+		crack.close();
+		faucet.close();
+		oneghost.close();
+		optionalghost.close();
+		tryMe.close();
+		urinal.close();
+		
+		Blinker blinker = new Blinker();
+        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+		
+		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(1.5), fadeOverlay);
+        sceneFadeIn.setFromValue(1.0); 
+        sceneFadeIn.setToValue(0.0);   
+        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
+        sceneFadeIn.play(); 
+		
+		this.getChildren().addAll(bg1_sink, crack, faucet, oneghost, optionalghost, tryMe, urinal, text, blinker.getBlinker(), fadeOverlay);
 		
 		startTextFade();
 		bg1_sink.setOnMouseClicked(event -> {
@@ -49,7 +68,6 @@ public class Scene3 extends ScenePane {
 	}
 	
 	public void startTextFade() {
-		this.getChildren().add(text);
         FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), text);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
