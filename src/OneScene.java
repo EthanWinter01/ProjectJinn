@@ -1,7 +1,9 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logic.GameLogic;
+
 import scene.*;
+import scene.ScenePane;
 
 public class OneScene extends Application {
 
@@ -9,10 +11,8 @@ public class OneScene extends Application {
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
 		GameLogic.setStage(arg0);
-
-		ScenePane scene = new Scene2();
+		ScenePane scene = new Scene6();
 		arg0.setScene(scene.getOverall());
-
 		arg0.show();
 		arg0.setResizable(false);
 	}

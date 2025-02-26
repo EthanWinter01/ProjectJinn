@@ -6,6 +6,7 @@ import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -15,8 +16,8 @@ import logic.GameLogic;
 
 public class Scene3 extends ScenePane {
 
+	private int sceneGuider = 0;
 	private ArrayList<Background> backgroundList;
-	private int i = 0;
 	private ImageObject bg1_sink, crack, faucet, oneghost, optionalghost, text, tryMe, urinal;
 	public Scene3() {
 		super("scene3/BG_scene3_1.png");
@@ -30,8 +31,8 @@ public class Scene3 extends ScenePane {
 //		back
 //		this.overall = new Scene(this, 900, 650);
 		bg1_sink = new ImageObject("scene3/object/bg1_sink.png");
-		crack = new ImageObject("scene3/object/crack.png");
-		faucet = new ImageObject("scene3/object/faucet.png");
+		crack = new NoisyObject("scene3/object/crack.png", "scene3/sound/glass-breaking.mp3");
+		faucet = new NoisyObject("scene3/object/faucet.png", "scene3/sound/open_faucet1.mp3");
 		oneghost = new ImageObject("scene3/object/oneghost.png");
 		optionalghost = new ImageObject("scene3/object/optionalghost.png");
 		text = new ImageObject("scene3/object/text.png");
@@ -57,14 +58,66 @@ public class Scene3 extends ScenePane {
 		this.getChildren().addAll(bg1_sink, crack, faucet, oneghost, optionalghost, tryMe, urinal, text, blinker.getBlinker(), fadeOverlay);
 		
 		startTextFade();
+		
 		bg1_sink.setOnMouseClicked(event -> {
 			this.getChildren().remove(bg1_sink);
 			this.setBackground(backgroundList.get(1));
+			urinal.open();
+			sceneGuider = 1;
 		});
 		
-//		this.setOnMouseClicked(event -> {
-//			this.setBackground(backgroundList.get((++i)%7));
-//		});
+		urinal.setOnMouseClicked(event -> {
+			this.getChildren().remove(urinal);
+			this.setBackground(backgroundList.get(2));
+			faucet.open();
+			sceneGuider = 2;
+		});
+		
+		faucet.setOnMouseClicked(event -> {
+			this.getChildren().remove(faucet);
+			this.setBackground(backgroundList.get(3));
+			oneghost.open();
+			sceneGuider = 3;
+		});
+		
+		oneghost.setOnMouseClicked(event -> {
+			this.getChildren().remove(oneghost);
+			this.setBackground(backgroundList.get(4));
+			tryMe.open();
+			sceneGuider = 4;
+		});
+		
+		tryMe.setOnMouseClicked(event -> {
+			if (sceneGuider == 4) {
+				this.getChildren().remove(tryMe);
+				this.setBackground(backgroundList.get(5));
+				crack.open();
+				sceneGuider = 5;
+			}
+		});
+		
+		crack.setOnMouseClicked(event -> {
+			if (sceneGuider == 5) {
+				optionalghost.open();
+				sceneGuider = 6;
+				
+				new Thread(() -> {
+	        		try {
+	                    Thread.sleep(3000); // Hold for 3 seconds
+	                } catch (InterruptedException e) {
+	                    Thread.currentThread().interrupt();
+	                }
+	        		Platform.runLater(() -> {
+	       				this.setNextScene(new Scene4());
+	       				if (this.nextScene != null) { // Ensure nextScene is not null
+	       					GameLogic.getStage().setScene(this.nextScene);
+	       				} else {
+	       					System.err.println("Next scene is not set!");
+	       				}
+	       			});
+        		}).start();
+			}
+		});
 	}
 	
 	public void startTextFade() {
