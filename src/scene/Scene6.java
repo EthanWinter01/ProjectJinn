@@ -29,7 +29,7 @@ public class Scene6 extends ScenePane {
 
 	private Background[] backgrounds;
 	private ImageObject  eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission;
-	private int next = 2;
+	private int countDown = 3;
 	
 	public Scene6() {
 		super("scene6/BG_scene6_1.png");
@@ -44,9 +44,7 @@ public class Scene6 extends ScenePane {
 		eye = new ImageObject("scene6/object/eye.png");
 		alert1 = new ImageObject("scene6/object/alert1.png");
 		alert2 = new ImageObject("scene6/object/alert2.png");
-		attend = new ImageObject("scene6/object/attend.png");
 		gradeletter = new ImageObject("scene6/object/gradeletter.png");
-		group_mem = new ImageObject("scene6/object/group_mem.png");
 		halfeye = new ImageObject("scene6/object/halfeye.png");
 		head_left = new ImageObject("scene6/object/head_left.png");
 		head_mid = new ImageObject("scene6/object/head_mid.png");
@@ -55,8 +53,16 @@ public class Scene6 extends ScenePane {
 		mid = new ImageObject("scene6/object/mid.png");
 		right = new ImageObject("scene6/object/right.png");
 		letterA = new ImageObject("scene6/object/letterA.png");
+		
+		
+		// where to use
+		attend = new ImageObject("scene6/object/attend.png");
+		group_mem = new ImageObject("scene6/object/group_mem.png");
 		showrank = new ImageObject("scene6/object/showrank.png");
 		submission = new ImageObject("scene6/object/submission.png");
+		
+		
+		
 		
 		
 		this.setOnMouseClicked(event -> { // this should activate by jor?
@@ -96,16 +102,40 @@ public class Scene6 extends ScenePane {
 		left.setOnMouseClicked(event -> {
 			this.getChildren().remove(left);
 			this.getChildren().add(head_left);
+			countDown--;
 		});
 		
 		mid.setOnMouseClicked(event -> {
 			this.getChildren().remove(mid);
 			this.getChildren().add(head_mid);
+			countDown--;
 		});
 		
 		right.setOnMouseClicked(event -> {
 			this.getChildren().remove(right);
 			this.getChildren().add(head_right);
+			countDown--;
+		});
+		
+		head_left.setOnMouseClicked(event -> {
+			if (countDown == 0) {
+				this.getChildren().removeAll(head_left, head_right, head_mid);
+				sceneBlink3(5);
+			}
+		});
+		
+		head_mid.setOnMouseClicked(event -> {
+			if (countDown == 0) {
+				this.getChildren().removeAll(head_left, head_right, head_mid);
+				sceneBlink3(5);
+			}	
+		});
+
+		head_right.setOnMouseClicked(event -> {
+			if (countDown == 0) {
+				this.getChildren().removeAll(head_left, head_right, head_mid);
+				sceneBlink3(5);
+			}
 		});
 	}
 	
@@ -139,5 +169,39 @@ public class Scene6 extends ScenePane {
         blinkThread.setDaemon(true);
         blinkThread.start();
     }
+    
+    private void sceneBlink3(int durationSeconds) {
+        Thread blinkThread = new Thread(() -> {
+            long endTime = System.currentTimeMillis() + durationSeconds * 1000L;
+
+            try {
+                while (System.currentTimeMillis() < endTime) {
+                    Thread.sleep(50);
+                    Platform.runLater(() -> {
+                        setBackground(backgrounds[7]);
+                    });
+
+                    Thread.sleep(50);
+                    Platform.runLater(() -> {
+                        setBackground(backgrounds[8]);
+                    });
+                    Thread.sleep(100);
+                    Platform.runLater(() -> {
+                        setBackground(backgrounds[9]);
+                    });
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+
+                Platform.runLater(() -> {
+                    setBackground(backgrounds[0]);
+                });
+            }
+        });
+
+        blinkThread.setDaemon(true);
+        blinkThread.start();
+    }    
 
 }

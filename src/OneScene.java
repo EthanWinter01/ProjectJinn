@@ -10,7 +10,7 @@ public class OneScene extends Application {
 		// TODO Auto-generated method stub
 		GameLogic.setStage(arg0);
 		
-		ScenePane scene = new Scene2();
+		ScenePane scene = new Scene6();
 		arg0.setScene(scene.getOverall());
 		arg0.show();
 		arg0.setResizable(false);
