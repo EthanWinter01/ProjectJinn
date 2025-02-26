@@ -1,5 +1,6 @@
 package scene;
 
+import component.BackgroundMusic;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.animation.KeyFrame;
@@ -33,10 +34,13 @@ public class Scene5 extends ScenePane {
 	private Background[] backgrounds;
 	int order = 0;
 	public Scene5() {
-		super("scene5/BG_scene5_2.png");
-		String[] bg = {"1", "black", "red"};
-		backgrounds = new Background[3];
-		for (int i=0; i<3; i++) {
+		super("scene5/BG_scene5_1.png");
+		BackgroundMusic.stopMusic();
+		BackgroundMusic.playMusic("scene5/sound/horrorspeed.mp3");
+		
+		String[] bg = {"1", "2", "black", "red"};
+		backgrounds = new Background[4];
+		for (int i=0; i<4; i++) {
 			backgrounds[i] = createBackground("scene5/BG_scene5_" + bg[i] + ".png");
 		}
 		
@@ -81,74 +85,99 @@ public class Scene5 extends ScenePane {
 				comsmile[0], comsmile[1], comsmile[2], 
 				projector[0], projector[1], 
 				blackscreen, keyboard, monitor, mouse,
-				timetohavefun, welcomestupid);
+				timetohavefun, welcomestupid
+		);
 		
 //		this.getChildren().addAll(ps);
 //		NoisyObject temp = new NoisyObject("scene5/object/blackscreen.png", getAccessibleHelp());
-		setBackground(backgrounds[0]);
 		
 		this.setOnMouseClicked(event -> {
-			if (sceneGuider == 0) {
-				projector[1].open();
-				sceneGuider = 1;
-			} 
+		    if (sceneGuider == 0) {
+		        projector[1].open();
+		        sceneGuider = 1;
+		    } 
 		});
-		
+
 		projector[1].setOnMouseClicked(event -> {
-			if (sceneGuider == 1) {
-				monitor.open();
-				sceneGuider = 2;
-			}
+		    if (sceneGuider == 1) {
+		        projector[1].close();
+		        keyboard.open();
+		        setBackground(backgrounds[1]); // backgrounds[1] = "scene5_2"
+		        sceneGuider = 2;
+		    }
 		});
-		
-		monitor.setOnMouseClicked(event -> {
-			if (sceneGuider == 2) {
-				setBackground(backgrounds[2]);
-				sceneGuider = 3;
-			} 
-//			else if (sceneGuider != 3) {
-//				return;
-//			}
-//			
-//			// Show all comsmile images (they will flicker)
-//		    comsmile[0].open();
-//		    comsmile[1].open();
-//		    comsmile[2].open();
-//
-//		    // Create a timeline to switch images quickly
-//		    Timeline glitchEffect = new Timeline(
-//		        new KeyFrame(Duration.millis(100), e -> {
-//		            comsmile[0].setVisible(true);
-//		            comsmile[1].setVisible(false);
-//		            comsmile[2].setVisible(false);
-//		        }),
-//		        new KeyFrame(Duration.millis(200), e -> {
-//		            comsmile[0].setVisible(false);
-//		            comsmile[1].setVisible(true);
-//		            comsmile[2].setVisible(false);
-//		        }),
-//		        new KeyFrame(Duration.millis(300), e -> {
-//		            comsmile[0].setVisible(false);
-//		            comsmile[1].setVisible(false);
-//		            comsmile[2].setVisible(true);
-//		        })
-//		    );
-//		    
-//		    glitchEffect.setCycleCount(5);
-//		    glitchEffect.setOnFinished(e -> {
-//		        // Hide comsmile images after glitching
-//		        comsmile[0].close();
-//		        comsmile[1].close();
-//		        comsmile[2].close();
-//
-//		        // Switch to black screen
-//		        setBackground(backgrounds[1]); // Assuming backgrounds[1] is BG_scene5_black
-//		    });
-//
-//		    // Start the glitch animation
-//		    glitchEffect.play();
-//		    sceneGuider = 4;
+
+		keyboard.setOnMouseClicked(event -> {
+		    if (sceneGuider == 2) {
+		        keyboard.close();
+		        runGlitchEffect();
+		    }
 		});
+
+		blackscreen.setOnMouseClicked(event -> {
+		    if (sceneGuider == 4) {
+		        blackscreen.close();
+		        welcomestupid.open();
+		        sceneGuider = 5;
+		    }
+		});
+
+		welcomestupid.setOnMouseClicked(event -> {
+		    if (sceneGuider == 5) {
+		        welcomestupid.close();
+		        timetohavefun.open();
+		        
+		        Timeline sequence = new Timeline(
+		            new KeyFrame(Duration.seconds(1), e -> {
+		                setBackground(backgrounds[2]); // Blink black for 0.5 sec
+		            }),
+		            new KeyFrame(Duration.seconds(1.5), e -> {
+		                setBackground(backgrounds[3]); // backgrounds[3] = "scene5_red"
+		                BackgroundMusic.stopMusic();
+		                BackgroundMusic.playMusic("scene5/sound/pasatV2.mp3");
+		                sceneGuider = 6;
+		            })
+		        );
+		        
+		        sequence.play();
+		    }
+		});
+	}
+	
+	private void runGlitchEffect() {
+	    comsmile[0].open();
+	    comsmile[1].open();
+	    comsmile[2].open();
+
+	    Timeline glitchEffect = new Timeline(
+	        new KeyFrame(Duration.millis(100), e -> {
+	            comsmile[0].setVisible(true);
+	            comsmile[1].setVisible(false);
+	            comsmile[2].setVisible(false);
+	        }),
+	        new KeyFrame(Duration.millis(200), e -> {
+	            comsmile[0].setVisible(false);
+	            comsmile[1].setVisible(true);
+	            comsmile[2].setVisible(false);
+	        }),
+	        new KeyFrame(Duration.millis(300), e -> {
+	            comsmile[0].setVisible(false);
+	            comsmile[1].setVisible(false);
+	            comsmile[2].setVisible(true);
+	        })
+	    );
+
+	    glitchEffect.setCycleCount(10);
+	    glitchEffect.setOnFinished(e -> {
+	        comsmile[0].close();
+	        comsmile[1].close();
+	        comsmile[2].close();
+	        setBackground(backgrounds[2]); // backgrounds[2] = "scene5_black"
+	        blackscreen.open();
+	        sceneGuider = 4;
+	    });
+
+	    glitchEffect.play();
 	}
 
 }
