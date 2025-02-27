@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import logic.GameLogic;
 import javafx.scene.text.Font; // Import Font
 
 public class Scene4 extends ScenePane {
@@ -108,6 +109,25 @@ public class Scene4 extends ScenePane {
         // Handle what happens if the player clicks pass[0] within 5 seconds
         System.out.println("Correct click! Player clicked pass[0] in time.");
         // Add your correct click logic here (e.g., advance to next scene, etc.)
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000); // Hold for 3 seconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            Platform.runLater(() -> {
+                this.setNextScene(new Scene3());
+                if (this.nextScene != null) { // Ensure nextScene is not null
+                    GameLogic.getStage().setScene(this.nextScene);
+                } else {
+                    System.err.println("Next scene is not set!");
+                }
+                
+                if (getHeartBeat() != null) {
+                    getHeartBeat().stop();
+                }
+            });
+        }).start();
     }
 
     public void startTextFade(ImageObject t) {
