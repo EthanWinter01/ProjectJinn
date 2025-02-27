@@ -43,7 +43,6 @@ public class Scene1_1 extends ScenePane {
 	    	        e.printStackTrace();
 	    	    }
 	    	    Platform.runLater(() -> {
-	    	    	System.out.println(this.getScene());
 	    	    	this.setNextScene(new Scene1_2());
 	    	    	if (this.nextScene != null) { // Ensure nextScene is not null
 	    	    		GameLogic.getStage().setScene(this.nextScene);
