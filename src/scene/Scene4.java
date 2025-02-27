@@ -99,7 +99,7 @@ public class Scene4 extends ScenePane {
             getHeartBeat().stop();
         }
         
-        NoisyObject scream = new NoisyObject("", "scene2/sound/Jumpscar.mp3");
+        NoisyObject scream = new NoisyObject("", "scene1/sound/Jumpscar.mp3");
         scream.onClick();
         
         new Thread(() -> {
