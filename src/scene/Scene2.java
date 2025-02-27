@@ -17,8 +17,8 @@ public class Scene2 extends ScenePane {
 
     private int sceneGuider = 0;
     private ArrayList<Background> backgroundList;
-    private ImageObject cheater, hi, screenReady, smile1, smile2, smile4, text;
-    private NoisyObject scanner, printerBody, paper, smile3;
+    private ImageObject screenReady, smile1, smile2, smile4, text;
+    private NoisyObject hi, cheater, scanner, printerBody, paper, smile3;
     
     public Scene2() {
         super("scene2/BG_scene2_1.png");
@@ -30,8 +30,8 @@ public class Scene2 extends ScenePane {
         }
         
         scanner = new NoisyObject("scene2/object/scanner.png", "scene2/sound/printer2.mp3", 10);
-        cheater = new ImageObject("scene2/object/cheater.png");
-        hi = new ImageObject("scene2/object/hi.png");
+        cheater = new NoisyObject("scene2/object/cheater.png", "scene2/sound/blood.mp3", 10);
+        hi = new NoisyObject("scene2/object/hi.png", "scene2/sound/blood.mp3", 10);
         paper = new NoisyObject("scene2/object/paper.png", "scene2/sound/paper.mp3", 10);
         printerBody = new NoisyObject("scene2/object/printer_body.png", "scene2/sound/printer1.mp3", 10);
         screenReady = new ImageObject("scene2/object/screen_ready.png");
@@ -95,6 +95,7 @@ public class Scene2 extends ScenePane {
         });
         
         hi.setOnMouseClicked(event -> {
+        	hi.onClick();
         	if (sceneGuider == 4) {
         		printerBody.close();
         		hi.close();
@@ -109,6 +110,7 @@ public class Scene2 extends ScenePane {
         });
         
         cheater.setOnMouseClicked(event -> {
+        	cheater.onClick();
         	if (sceneGuider == 6) {	
         		cheater.close();
         		paper.open();

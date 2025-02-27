@@ -33,10 +33,10 @@ public class Scene3 extends ScenePane {
 		crack = new NoisyObject("scene3/object/crack.png", "scene3/sound/glass-breaking.mp3", 500);
 		faucet = new NoisyObject("scene3/object/faucet.png", "scene3/sound/open_faucet1.mp3", 500);
 		oneghost = new NoisyObject("scene3/object/oneghost.png", "scene3/sound/turn_on_light.mp3", 500);
-		optionalghost = new NoisyObject("scene3/object/optionalghost.png", "scene3/sound/ghostwomenhaha.mp3");
+		optionalghost = new NoisyObject("scene3/object/optionalghost.png", "scene2/sound/Scream.mp3");
 		text = new ImageObject("scene3/object/text.png");
-		tryMe = new ImageObject("scene3/object/tryme.png");
-		urinal = new ImageObject("scene3/object/urinal.png");
+		tryMe = new NoisyObject("scene3/object/tryme.png", "scene2/sound/blood.mp3");
+		urinal = new NoisyObject("scene3/object/urinal.png", "scene3/sound/toilet.mp3");
 
 		crack.close();
 		faucet.close();
@@ -70,8 +70,10 @@ public class Scene3 extends ScenePane {
 		});
 		
 		urinal.setOnMouseClicked(event -> {
+			urinal.onClick();
 			this.getChildren().remove(urinal);
 			this.setBackground(backgroundList.get(2));
+			oneghost.onClick();
 			faucet.open();
 			sceneGuider = 2;
 		});
@@ -106,6 +108,7 @@ public class Scene3 extends ScenePane {
 		
 		crack.setOnMouseClicked(event -> {
 			if (sceneGuider == 5) {
+				crack.getMediaPlayer().setVolume(0.8);
 				crack.onClick();
 				this.setBackground(backgroundList.get(6));
 				sceneGuider = 6;
