@@ -17,7 +17,7 @@ public class Blinker {
 	        try {
 	            while (true) {
 	                Platform.runLater(() -> blackScene.setOpacity(0.1));
-	                Thread.sleep(15000);
+	                Thread.sleep(150);
 	                Platform.runLater(() -> blackScene.setOpacity(1.0));
 	                Thread.sleep(20);
 	            }

@@ -3,10 +3,15 @@ package scene;
 import component.BackgroundMusic;
 import component.ImageObject;
 import component.NoisyObject;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Cursor;
 import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import logic.GameLogic;
 
 /*
 Scene 5
@@ -32,7 +37,7 @@ public class Scene5 extends ScenePane {
 	private ImageObject blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid;
 	
 	private Background[] backgrounds;
-	int order = 0;
+
 	public Scene5() {
 		super("scene5/BG_scene5_1.png");
 		BackgroundMusic.stopMusic();
@@ -79,41 +84,51 @@ public class Scene5 extends ScenePane {
 		timetohavefun.close();
 		welcomestupid.close();
 		
-		this.getChildren().addAll(
-				ties[0], ties[1], ties[2], ties[3], ties[4], ties[5], ties[6],
-				ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6],
-				comsmile[0], comsmile[1], comsmile[2], 
-				projector[0], projector[1], 
+//		this.getChildren().addAll(
+//				ties[0], ties[1], ties[2], ties[3], ties[4], ties[5], ties[6],
+//				ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6],
+//				comsmile[0], comsmile[1], comsmile[2], 
+//				projector[0], projector[1], 
+//				blackscreen, keyboard, monitor, mouse,
+//				timetohavefun, welcomestupid
+//		);
+		this.getChildren().addAll(ties);
+		this.getChildren().addAll(ps);
+		this.getChildren().addAll(comsmile);
+		this.getChildren().addAll(projector);
+		this.getChildren().addAll(				 
 				blackscreen, keyboard, monitor, mouse,
 				timetohavefun, welcomestupid
 		);
 		
-//		this.getChildren().addAll(ps);
-//		NoisyObject temp = new NoisyObject("scene5/object/blackscreen.png", getAccessibleHelp());
-		
 		this.setOnMouseClicked(event -> {
 		    if (sceneGuider == 0) {
-		        projector[1].open();
+		        projector[0].open();
+		        projector[0].setOpacity(0);
 		        sceneGuider = 1;
 		    } 
 		});
-
-		projector[1].setOnMouseClicked(event -> {
+		
+		projector[0].setOnMouseClicked(event -> {
 		    if (sceneGuider == 1) {
-		        projector[1].close();
-		        keyboard.open();
-		        setBackground(backgrounds[1]); // backgrounds[1] = "scene5_2"
+		        projector[0].close();
+		        projector[1].open();
+		        monitor.open();
 		        sceneGuider = 2;
 		    }
 		});
-
-		keyboard.setOnMouseClicked(event -> {
-		    if (sceneGuider == 2) {
-		        keyboard.close();
-		        runGlitchEffect();
-		    }
+		
+		monitor.setOnMouseClicked(event -> {
+			if (sceneGuider == 2) {
+				projector[1].close();
+				monitor.close();
+				setBackground(backgrounds[1]);
+				runGlitchEffect();
+				sceneGuider = 3;
+			}
 		});
-
+		
+		
 		blackscreen.setOnMouseClicked(event -> {
 		    if (sceneGuider == 4) {
 		        blackscreen.close();
@@ -121,7 +136,7 @@ public class Scene5 extends ScenePane {
 		        sceneGuider = 5;
 		    }
 		});
-
+				
 		welcomestupid.setOnMouseClicked(event -> {
 		    if (sceneGuider == 5) {
 		        welcomestupid.close();
@@ -142,6 +157,50 @@ public class Scene5 extends ScenePane {
 		        sequence.play();
 		    }
 		});
+		
+		timetohavefun.setOnMouseClicked(event -> {
+			if (sceneGuider == 6) {
+				timetohavefun.close();
+				for (int i=0; i<7; i++) {
+					ties[i].open();
+				}
+				sceneGuider = 7;
+			}
+		});
+		
+		for (int i=0; i<7; i++) {
+			final int x = i;
+			ties[i].setOnMouseClicked(event -> {
+				ties[x].close();
+				if (sceneGuider >= 7 && sceneGuider < 13) {
+					ps[x].open();					
+					sceneGuider++;
+				} else if (sceneGuider == 13) {
+//					System.out.println("alarm clock");
+					sceneGuider++;
+					GameLogic.getStage().setScene((new Scene6()).getOverall());
+				}
+			});
+		}
+		
+//		keyboard.setOnMouseClicked(event -> {
+//		    if (sceneGuider == 3) {
+//		        keyboard.close();
+//		        runGlitchEffect();
+//		    }
+//		});
+		
+//		this.setCursor(Cursor.HAND);
+		Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+		this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
+		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
+        sceneFadeIn.setFromValue(1.0); 
+        sceneFadeIn.setToValue(0.0);   
+        sceneFadeIn.setDelay(Duration.seconds(2));
+        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
+        sceneFadeIn.play(); 
+		
+
 	}
 	
 	private void runGlitchEffect() {

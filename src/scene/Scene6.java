@@ -1,8 +1,17 @@
 package scene;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import component.ImageObject;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+import logic.GameLogic;
 /*
 Scene 6
 หน้า BG_scene6_1
@@ -62,46 +71,59 @@ public class Scene6 extends ScenePane {
 		submission = new ImageObject("scene6/object/submission.png");
 		
 		
-		
+		this.getChildren().addAll(eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission);
+		hide((ArrayList<ImageObject>) Arrays.asList( eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission));
 		
 		
 		this.setOnMouseClicked(event -> { // this should activate by jor?
 				this.setBackground(backgrounds[2]);
-				this.getChildren().add(eye);
+//				this.getChildren().add(eye);
+				eye.open();
 				this.setOnMouseClicked(null);
 		});
 		
 		eye.setOnMouseClicked(event -> {
-			this.getChildren().remove(eye);
-			this.getChildren().add(alert1);
+//			this.getChildren().remove(eye);
+//			this.getChildren().add(alert1);
+			eye.close();
+			alert1.open();
 			// where is down?
 		});
 		
 		alert1.setOnMouseClicked(event -> {
-			this.getChildren().remove(alert1);
+			alert1.close();
+//			this.getChildren().remove(alert1);
 			this.setBackground(backgrounds[3]);
-			this.getChildren().add(halfeye);
+//			this.getChildren().add(halfeye);
+			halfeye.open();
 		});
 		
 		halfeye.setOnMouseClicked(event -> {
-			this.getChildren().remove(halfeye);
-			this.getChildren().addAll(alert2, gradeletter);
+//			this.getChildren().remove(halfeye);
+//			this.getChildren().addAll(alert2, gradeletter);
+			halfeye.close();
+			alert2.open();
+			gradeletter.open();
 		});
 		
 		gradeletter.setOnMouseClicked(event -> {
-			this.getChildren().remove(gradeletter);
+			gradeletter.close();
+//			this.getChildren().remove(gradeletter);
 			this.setBackground(backgrounds[4]);
-			this.getChildren().add(letterA);
+//			this.getChildren().add(letterA);
+			letterA.open();
 		});
 		
 		letterA.setOnMouseClicked(event -> {
-			this.getChildren().clear();
+			
+//			this.getChildren().clear();
 			sceneBlink(5);
 		});
 		
 		left.setOnMouseClicked(event -> {
-			this.getChildren().remove(left);
-			this.getChildren().add(head_left);
+//			this.getChildren().remove(left);
+//			this.getChildren().add(head_left);
+			
 			countDown--;
 		});
 		
@@ -137,6 +159,30 @@ public class Scene6 extends ScenePane {
 				sceneBlink3(5);
 			}
 		});
+		
+		eye.close();
+		
+		Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+		this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
+		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
+        sceneFadeIn.setFromValue(1.0); 
+        sceneFadeIn.setToValue(0.0);   
+        sceneFadeIn.setDelay(Duration.seconds(2));
+        sceneFadeIn.setOnFinished(event -> {
+        	this.getChildren().remove(fadeOverlay);
+        	eye.open();
+        	eye.setOpacity(0);
+        	this.setCursor(Cursor.DEFAULT);
+        	
+        });
+        this.setCursor(Cursor.HAND);
+        sceneFadeIn.play(); 
+	}
+	
+	private void hide(ArrayList<ImageObject> imgO) {
+		for (int i=0; i<imgO.size(); i++) {
+			imgO.get(i).close();
+		}
 	}
 	
     private void sceneBlink(int durationSeconds) {
