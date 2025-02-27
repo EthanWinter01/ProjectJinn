@@ -1,8 +1,12 @@
 package scene;
 
+import component.BackgroundMusic;
 import component.ImageObject;
 import component.NoisyObject;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Background;
+import javafx.util.Duration;
 
 /*
 Scene 5
@@ -23,16 +27,20 @@ Scene 5
 
 public class Scene5 extends ScenePane {
 
+	private int sceneGuider = 0;
 	private ImageObject[] ties, ps, comsmile, projector;
 	private ImageObject blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid;
 	
 	private Background[] backgrounds;
 	int order = 0;
 	public Scene5() {
-		super("scene5/BG_scene5_2.png");
-		String[] bg = {"1", "black", "red"};
-		backgrounds = new Background[3];
-		for (int i=0; i<3; i++) {
+		super("scene5/BG_scene5_1.png");
+		BackgroundMusic.stopMusic();
+		BackgroundMusic.playMusic("scene5/sound/horrorspeed.mp3");
+		
+		String[] bg = {"1", "2", "black", "red"};
+		backgrounds = new Background[4];
+		for (int i=0; i<4; i++) {
 			backgrounds[i] = createBackground("scene5/BG_scene5_" + bg[i] + ".png");
 		}
 		
@@ -43,6 +51,8 @@ public class Scene5 extends ScenePane {
 		for (int i=0; i<7; i++) {
 			ties[i] = new ImageObject("scene5/object/tie" + (i+1) +".png");
 			ps[i] = new ImageObject("scene5/object/p" + (i+1) +".png");
+			ties[i].close();
+			ps[i].close();
 		}
 		
 		comsmile[0] = new ImageObject("scene5/object/comsmile_1.png");
@@ -57,14 +67,117 @@ public class Scene5 extends ScenePane {
 		timetohavefun = new ImageObject("scene5/object/timetohavefun.png");
 		welcomestupid = new ImageObject("scene5/object/welcomestupid.png");
 		
+		comsmile[0].close();
+		comsmile[1].close();
+		comsmile[2].close();
+		projector[0].close();
+		projector[1].close();
+		blackscreen.close();
+		keyboard.close();
+		monitor.close();
+		mouse.close();
+		timetohavefun.close();
+		welcomestupid.close();
+		
+		this.getChildren().addAll(
+				ties[0], ties[1], ties[2], ties[3], ties[4], ties[5], ties[6],
+				ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6],
+				comsmile[0], comsmile[1], comsmile[2], 
+				projector[0], projector[1], 
+				blackscreen, keyboard, monitor, mouse,
+				timetohavefun, welcomestupid
+		);
+		
 //		this.getChildren().addAll(ps);
-		NoisyObject temp = new NoisyObject("scene5/object/blackscreen.png", getAccessibleHelp());
+//		NoisyObject temp = new NoisyObject("scene5/object/blackscreen.png", getAccessibleHelp());
 		
 		this.setOnMouseClicked(event -> {
-				
-				this.setBackground(backgrounds[(order++)%3]);
-				
+		    if (sceneGuider == 0) {
+		        projector[1].open();
+		        sceneGuider = 1;
+		    } 
 		});
+
+		projector[1].setOnMouseClicked(event -> {
+		    if (sceneGuider == 1) {
+		        projector[1].close();
+		        keyboard.open();
+		        setBackground(backgrounds[1]); // backgrounds[1] = "scene5_2"
+		        sceneGuider = 2;
+		    }
+		});
+
+		keyboard.setOnMouseClicked(event -> {
+		    if (sceneGuider == 2) {
+		        keyboard.close();
+		        runGlitchEffect();
+		    }
+		});
+
+		blackscreen.setOnMouseClicked(event -> {
+		    if (sceneGuider == 4) {
+		        blackscreen.close();
+		        welcomestupid.open();
+		        sceneGuider = 5;
+		    }
+		});
+
+		welcomestupid.setOnMouseClicked(event -> {
+		    if (sceneGuider == 5) {
+		        welcomestupid.close();
+		        timetohavefun.open();
+		        
+		        Timeline sequence = new Timeline(
+		            new KeyFrame(Duration.seconds(1), e -> {
+		                setBackground(backgrounds[2]); // Blink black for 0.5 sec
+		            }),
+		            new KeyFrame(Duration.seconds(1.5), e -> {
+		                setBackground(backgrounds[3]); // backgrounds[3] = "scene5_red"
+		                BackgroundMusic.stopMusic();
+		                BackgroundMusic.playMusic("scene5/sound/pasatV2.mp3");
+		                sceneGuider = 6;
+		            })
+		        );
+		        
+		        sequence.play();
+		    }
+		});
+	}
+	
+	private void runGlitchEffect() {
+	    comsmile[0].open();
+	    comsmile[1].open();
+	    comsmile[2].open();
+
+	    Timeline glitchEffect = new Timeline(
+	        new KeyFrame(Duration.millis(100), e -> {
+	            comsmile[0].setVisible(true);
+	            comsmile[1].setVisible(false);
+	            comsmile[2].setVisible(false);
+	        }),
+	        new KeyFrame(Duration.millis(200), e -> {
+	            comsmile[0].setVisible(false);
+	            comsmile[1].setVisible(true);
+	            comsmile[2].setVisible(false);
+	        }),
+	        new KeyFrame(Duration.millis(300), e -> {
+	            comsmile[0].setVisible(false);
+	            comsmile[1].setVisible(false);
+	            comsmile[2].setVisible(true);
+	        })
+	    );
+
+	    glitchEffect.setCycleCount(10);
+	    glitchEffect.setOnFinished(e -> {
+	        comsmile[0].close();
+	        comsmile[1].close();
+	        comsmile[2].close();
+	        setBackground(backgrounds[2]); // backgrounds[2] = "scene5_black"
+	        blackscreen.open();
+	        sceneGuider = 4;
+	    });
+
+	    glitchEffect.play();
 	}
 
 }
