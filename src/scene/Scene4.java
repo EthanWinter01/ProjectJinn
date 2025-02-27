@@ -52,18 +52,30 @@ public class Scene4 extends ScenePane {
        choice1 = new NoisyObject("scene4/object/C1.png", "scene2/sound/blood.mp3");
        doorSound = new NoisyObject("", "scene4/sound/squeky-door-open-113212.mp3");
        
-       this.getChildren().add(door);
-       startTextFade(text);
+       this.getChildren().addAll(door, choice1, doorSound);
+       door.close();
+       choice1.close();
+       doorSound.close();
        
        door.setOnMouseClicked(event -> {
-           this.getChildren().remove(door);
+    	   door.close();
            this.setBackground(next_background);
-           this.getChildren().add(choice1);
-           startTextFade(text2);
-           startCountdown(5);
+           startTextFade(text2, 1);
        });
        
        choice1.setOnMouseClicked(event -> handleCorrectClick());
+       
+       Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+		this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
+		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
+       sceneFadeIn.setFromValue(1.0); 
+       sceneFadeIn.setToValue(0.0);   
+       sceneFadeIn.setDelay(Duration.seconds(2));
+       sceneFadeIn.setOnFinished(event -> {
+    	   this.getChildren().remove(fadeOverlay); // Remove after fade
+    	   startTextFade(text, 0);
+       });
+       sceneFadeIn.play(); 
     }
 
     private void startCountdown(int seconds) {
@@ -139,7 +151,7 @@ public class Scene4 extends ScenePane {
         }).start();
     }
 
-    public void startTextFade(ImageObject t) {
+    public void startTextFade(ImageObject t, int flag) {
         this.getChildren().add(t);
 
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(3), t);
@@ -149,9 +161,16 @@ public class Scene4 extends ScenePane {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setDelay(Duration.seconds(2));
-        fadeOut.setOnFinished(event -> this.getChildren().remove(t));
-
-        fadeIn.setOnFinished(event -> fadeOut.play());
-        fadeIn.play();
+        fadeOut.setOnFinished(event -> {
+        	this.getChildren().remove(t);
+        	if (flag == 0) {
+        		door.open();
+        	} else if (flag == 1) {
+        		startCountdown(5);
+        	}
+        });
+        fadeOut.play();
+//        fadeIn.setOnFinished(event -> fadeOut.play());
+//        fadeIn.play();
     }
 }
