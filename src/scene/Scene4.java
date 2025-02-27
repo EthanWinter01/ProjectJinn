@@ -16,10 +16,10 @@
 //		ถ้าผู้เล่นกดตัวอักษรถูก (เฉลยคือ CTRL-SP) ภายในเวลาจะตัดเข้าซีน5 ถ้าหมดเวลาก่อนตอบถูกให้มีเสียงกรี้ดแสบหูก่อนเข้าซีน5
 //
 // */
-
 package scene;
 
 import component.ImageObject;
+import component.NoisyObject;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,53 +28,53 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import logic.GameLogic;
-import javafx.scene.text.Font; // Import Font
 
 public class Scene4 extends ScenePane {
     private Background next_background;
     private ImageObject text, text2, door;
-    private ImageObject[] pass;
+    private NoisyObject choice1, doorSound;
     private Timeline countdownTimeline;
     private Label countdownLabel;
     private int remainingSeconds;
+    private StackPane countdownPane;
 
     public Scene4() {
-        super("scene4/BG_scene4_1.png");
-        next_background = this.createBackground("scene4/BG_scene4_2.png");
-        text = new ImageObject("scene4/object/text1.png");
-        text2 = new ImageObject("scene4/object/text2.png");
-        door = new ImageObject("scene4/object/door.png");
-
-        pass = new ImageObject[6];
-        for (int i = 0; i < 6; i++) {
-            pass[i] = new ImageObject("scene4/object/C" + (i + 1) + ".png");
-        }
-
-        this.getChildren().add(door);
-        startTextFade(text);
-
-        door.setOnMouseClicked(event -> {
-            this.getChildren().remove(door);
-            this.setBackground(next_background);
-            this.getChildren().addAll(pass);
-            startTextFade(text2);
-            startCountdown(5); // Start 5-second countdown when door is clicked
-        });
+       super("scene4/BG_scene4_1.png");
+       next_background = this.createBackground("scene4/BG_scene4_2.png");
+       text = new ImageObject("scene4/object/text1.png");
+       text2 = new ImageObject("scene4/object/text2.png");
+       door = new ImageObject("scene4/object/door.png");
+       choice1 = new NoisyObject("scene4/object/C1.png", "scene2/sound/blood.mp3");
+       doorSound = new NoisyObject("", "scene4/sound/squeky-door-open-113212.mp3");
+       
+       this.getChildren().add(door);
+       startTextFade(text);
+       
+       door.setOnMouseClicked(event -> {
+           this.getChildren().remove(door);
+           this.setBackground(next_background);
+           this.getChildren().add(choice1);
+           startTextFade(text2);
+           startCountdown(5);
+       });
+       
+       choice1.setOnMouseClicked(event -> handleCorrectClick());
     }
 
     private void startCountdown(int seconds) {
         remainingSeconds = seconds;
         countdownLabel = new Label(String.valueOf(remainingSeconds));
+        countdownLabel.setFont(Font.font("Arial", 200));
+        countdownLabel.setStyle("-fx-text-fill: white;");
 
-        // Make the font bigger and fit the app size (adjust as needed)
-        countdownLabel.setFont(Font.font("Arial", 200));  // Adjust font and size
-        countdownLabel.setStyle("-fx-text-fill: white;"); // Optional: Set text color
-
-        StackPane countdownPane = new StackPane(countdownLabel);
+        countdownPane = new StackPane(countdownLabel);
         countdownPane.setAlignment(Pos.CENTER);
-        countdownPane.setPrefSize(900, 650); // Set to app size
+        countdownPane.setPrefSize(900, 650);
         this.getChildren().add(countdownPane);
 
         countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -83,49 +83,58 @@ public class Scene4 extends ScenePane {
                 countdownLabel.setText(String.valueOf(remainingSeconds));
             } else {
                 countdownTimeline.stop();
-                this.getChildren().remove(countdownPane); // Remove countdown display
+                this.getChildren().remove(countdownPane);
                 handleTimeout();
             }
         }));
         countdownTimeline.setCycleCount(Timeline.INDEFINITE);
         countdownTimeline.play();
-
-        pass[0].setOnMouseClicked(event -> {
-            if (countdownTimeline != null && countdownTimeline.getStatus() == Timeline.Status.RUNNING) {
-                countdownTimeline.stop();
-                this.getChildren().remove(countdownPane); // Remove countdown display
-                handleCorrectClick();
-            }
-        });
     }
 
     private void handleTimeout() {
-        // Handle what happens if the player doesn't click pass[0] in 5 seconds
-        System.out.println("Timeout! Player didn't click pass[0] in time.");
-        // Add your timeout logic here (e.g., show a message, change scene, etc.)
-    }
-
-    private void handleCorrectClick() {
-        // Handle what happens if the player clicks pass[0] within 5 seconds
-        System.out.println("Correct click! Player clicked pass[0] in time.");
-        // Add your correct click logic here (e.g., advance to next scene, etc.)
+        Rectangle blackScreen = new Rectangle(900, 650, Color.BLACK);
+        this.getChildren().add(blackScreen);
+        
+        if (getHeartBeat() != null) {
+            getHeartBeat().stop();
+        }
+        
+        NoisyObject scream = new NoisyObject("", "scene2/sound/Jumpscar.mp3");
+        scream.onClick();
+        
         new Thread(() -> {
             try {
-                Thread.sleep(3000); // Hold for 3 seconds
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             Platform.runLater(() -> {
-                this.setNextScene(new Scene3());
-                if (this.nextScene != null) { // Ensure nextScene is not null
-                    GameLogic.getStage().setScene(this.nextScene);
-                } else {
-                    System.err.println("Next scene is not set!");
-                }
-                
-                if (getHeartBeat() != null) {
-                    getHeartBeat().stop();
-                }
+                this.setNextScene(new Scene5());
+                GameLogic.getStage().setScene(this.nextScene);
+            });
+        }).start();
+    }
+
+    private void handleCorrectClick() {
+        countdownTimeline.stop();
+        this.getChildren().remove(countdownPane);
+        this.setBackground(next_background);
+        
+        doorSound.onClick();
+        door.setOnMouseClicked(event -> goToNextScene());
+        this.getChildren().add(door);
+    }
+
+    private void goToNextScene() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            Platform.runLater(() -> {
+                this.setNextScene(new Scene5());
+                GameLogic.getStage().setScene(this.nextScene);
             });
         }).start();
     }
