@@ -16,48 +16,7 @@
 //		ถ้าผู้เล่นกดตัวอักษรถูก (เฉลยคือ CTRL-SP) ภายในเวลาจะตัดเข้าซีน5 ถ้าหมดเวลาก่อนตอบถูกให้มีเสียงกรี้ดแสบหูก่อนเข้าซีน5
 //
 // */
-//
-//public class Scene4 extends ScenePane {
-//	private Background next_background;
-//	private ImageObject text, text2, door;
-//	private ImageObject[] pass;
-//	public Scene4() {
-//		super("scene4/BG_scene4_1.png");
-//		next_background = this.createBackground("scene4/BG_scene4_2.png");
-//		text = new ImageObject("scene4/object/text1.png");
-//		text2 = new ImageObject("scene4/object/text2.png");
-//		door = new ImageObject("scene4/object/door.png");
-//		
-//		pass = new ImageObject[6];
-//		for (int i=0; i<6; i++) {
-//			pass[i] = new ImageObject("scene4/object/C" + (i+1) + ".png");
-//		}
-//		
-//		this.getChildren().add(door);
-//		startTextFade(text);
-//		door.setOnMouseClicked(event -> {
-//			this.getChildren().remove(door);
-//			this.setBackground(next_background);
-//			this.getChildren().addAll(pass);
-//			startTextFade(text2);
-//		});
-//	}
-//	public void startTextFade(ImageObject t) {
-//        this.getChildren().add(t);
-//
-//        FadeTransition fadeIn = new FadeTransition(Duration.seconds(3), t);
-//        fadeIn.setFromValue(0.0);
-//        fadeIn.setToValue(1.0);   
-//        FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), t);
-//        fadeOut.setFromValue(1.0); 
-//        fadeOut.setToValue(0.0);   
-//        fadeOut.setDelay(Duration.seconds(2)); 
-//        fadeOut.setOnFinished(event -> this.getChildren().remove(t)); 
-//
-//        fadeIn.setOnFinished(event -> fadeOut.play()); 
-//        fadeIn.play(); 
-//    }
-//}
+
 package scene;
 
 import component.ImageObject;
@@ -70,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import logic.GameLogic;
 import javafx.scene.text.Font; // Import Font
 
 public class Scene4 extends ScenePane {
@@ -149,6 +109,25 @@ public class Scene4 extends ScenePane {
         // Handle what happens if the player clicks pass[0] within 5 seconds
         System.out.println("Correct click! Player clicked pass[0] in time.");
         // Add your correct click logic here (e.g., advance to next scene, etc.)
+        new Thread(() -> {
+            try {
+                Thread.sleep(3000); // Hold for 3 seconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            Platform.runLater(() -> {
+                this.setNextScene(new Scene3());
+                if (this.nextScene != null) { // Ensure nextScene is not null
+                    GameLogic.getStage().setScene(this.nextScene);
+                } else {
+                    System.err.println("Next scene is not set!");
+                }
+                
+                if (getHeartBeat() != null) {
+                    getHeartBeat().stop();
+                }
+            });
+        }).start();
     }
 
     public void startTextFade(ImageObject t) {

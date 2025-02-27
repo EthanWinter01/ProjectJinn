@@ -1,5 +1,7 @@
 package scene;
 
+import java.net.URL;
+
 import component.BackgroundMusic;
 import component.ImageObject;
 import javafx.animation.FadeTransition;
@@ -12,6 +14,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public abstract class ScenePane extends Pane {
@@ -19,11 +23,13 @@ public abstract class ScenePane extends Pane {
 	protected Scene overall;
 	protected Scene nextScene;
 	protected BackgroundMusic backgroundMusic;
+	protected MediaPlayer heartBeatPlayer;
 	
 	public ScenePane(String fileName) {		
     	this.setBackground(createBackground(fileName));
     	this.backgroundMusic = null;
     	overall = new Scene(this, 900, 650);
+    	initialHeartBeat();
 	}
 	
 	public Background createBackground(String fileName) {
@@ -55,4 +61,18 @@ public abstract class ScenePane extends Pane {
         fadeOut.setOnFinished(event -> this.getChildren().remove(text)); // Remove text after fade
         fadeOut.play();
     }
+
+	private void initialHeartBeat() {
+		URL heartBeatUrl = ClassLoader.getSystemResource("scene3/sound/heart-beat-137135.mp3");
+        if (heartBeatUrl != null) {
+            heartBeatPlayer = new MediaPlayer(new Media(heartBeatUrl.toString()));
+            heartBeatPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop sound
+        } else {
+            System.err.println("Sound file not found: scene3/sound/heart-beat-137135.mp3");
+        }
+	}
+	
+	public MediaPlayer getHeartBeat() {
+		return heartBeatPlayer;
+	}
 }

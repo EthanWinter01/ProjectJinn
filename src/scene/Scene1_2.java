@@ -1,12 +1,15 @@
 package scene;
 
+import java.net.URL;
+
 import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.layout.Background;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -30,7 +33,7 @@ public class Scene1_2 extends ScenePane {
     
         busbell = new ImageObject("scene1/object/busbell.png");
         chair = new ImageObject("scene1/object/chair.png");
-        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/Jumpscare_1.mp3");
+        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/Jumpscare2.mp3");
         hands = new NoisyObject("scene1/object/hands.png", "scene1/sound/hand/paste.mp3");
         mirror = new ImageObject("scene1/object/mirror.png");
         
@@ -72,13 +75,14 @@ public class Scene1_2 extends ScenePane {
             	this.getChildren().remove(hands);
             	this.getChildren().remove(ghost);
             	setBackground(backgrounds[0]);
+            	getHeartBeat().stop();
             });
             ghostFadeOut.play();
             ghostAppeared = true;
             busbell.setOpacity(1);
             mirror.setOpacity(1);
             chair.setOpacity(1);
-        
+            
         }
     }
 
@@ -107,14 +111,31 @@ public class Scene1_2 extends ScenePane {
     }
 
     private void sceneBlink(int durationSeconds) {
+    	URL soundUrl = ClassLoader.getSystemResource("scene1/sound/light_pop.mp3");
+        MediaPlayer popSound = null;
+        
+        if (soundUrl != null) {
+            popSound = new MediaPlayer(new Media(soundUrl.toString()));
+        } else {
+            System.err.println("Sound file not found: scene1/sound/light_pop.mp3");
+        }
+        MediaPlayer finalPopSound = popSound;
+    	
         Thread blinkThread = new Thread(() -> {
             long endTime = System.currentTimeMillis() + durationSeconds * 1000L;
 
             try {
+            	getHeartBeat().setVolume(0.3);
+            	getHeartBeat().play();
+            	if (finalPopSound != null) {
+                    finalPopSound.seek(Duration.ZERO);
+                    finalPopSound.play();
+                }
                 while (System.currentTimeMillis() < endTime) {
-                    Thread.sleep(100);
+                	
+                	Thread.sleep(100);
                     Platform.runLater(() -> {
-                        busbell.setOpacity(1);
+                    	busbell.setOpacity(1);
                         mirror.setOpacity(1);
                         chair.setOpacity(1);
                         setBackground(backgrounds[0]);

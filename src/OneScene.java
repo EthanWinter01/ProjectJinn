@@ -11,14 +11,14 @@ public class OneScene extends Application {
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
 		GameLogic.setStage(arg0);
-		ScenePane scene = new Scene5();
+		ScenePane scene = new Scene6();
 		arg0.setScene(scene.getOverall());
 		arg0.show();
 		arg0.setResizable(false);
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		launch(args);    
 	}
 
 }
