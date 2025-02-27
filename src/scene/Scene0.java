@@ -66,7 +66,7 @@ public class Scene0 extends ScenePane {
     	    }).start();
     	});
     	
-    	BackgroundMusic.playMusic("home/sound/home.mp3");
+    	BackgroundMusic.playMusic("home/sound/BGM_home.mp3");
 	}
 
 }

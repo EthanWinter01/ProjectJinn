@@ -6,7 +6,6 @@ import component.Blinker;
 import component.ImageObject;
 import component.NoisyObject;
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -16,22 +15,22 @@ import logic.GameLogic;
 
 public class Scene2 extends ScenePane {
 
-	private int sceneGuider = 0;
-	private ArrayList<Background> backgroundList;
-	private ImageObject cheater, hi, screenReady, smile1, smile2, smile4, text;
-	private NoisyObject scanner, printerBody, paper, smile3;
-
-	public Scene2() {
-		super("scene2/BG_scene2_1.png");
-		String[] bg = {"light", "dark", "green","red_notsmile", "red_smile"};
-		backgroundList = new ArrayList<Background>();
-		backgroundList.add(getBackground());
-		for (int i=0; i<5; i++) {
-			backgroundList.add(createBackground("scene2/BG_scene2_2_" + bg[i] + ".png"));
-		}
-		
-		scanner = new NoisyObject("scene2/object/scanner.png", "scene2/sound/printer2.mp3", 10);
-		cheater = new ImageObject("scene2/object/cheater.png");
+    private int sceneGuider = 0;
+    private ArrayList<Background> backgroundList;
+    private ImageObject cheater, hi, screenReady, smile1, smile2, smile4, text;
+    private NoisyObject scanner, printerBody, paper, smile3;
+    
+    public Scene2() {
+        super("scene2/BG_scene2_1.png");
+        String[] bg = {"light", "dark", "green","red_notsmile", "red_smile"};
+        backgroundList = new ArrayList<Background>();
+        backgroundList.add(getBackground());
+        for (int i = 0; i < 5; i++) {
+            backgroundList.add(createBackground("scene2/BG_scene2_2_" + bg[i] + ".png"));
+        }
+        
+        scanner = new NoisyObject("scene2/object/scanner.png", "scene2/sound/printer2.mp3", 10);
+        cheater = new ImageObject("scene2/object/cheater.png");
         hi = new ImageObject("scene2/object/hi.png");
         paper = new NoisyObject("scene2/object/paper.png", "scene2/sound/paper.mp3", 10);
         printerBody = new NoisyObject("scene2/object/printer_body.png", "scene2/sound/printer1.mp3", 10);
@@ -43,7 +42,7 @@ public class Scene2 extends ScenePane {
         text = new ImageObject("scene2/object/text.png");
         startTextFade(text);
         
-		cheater.close();
+        cheater.close();
         hi.close();
         paper.close();
         printerBody.close();
@@ -58,10 +57,10 @@ public class Scene2 extends ScenePane {
         this.getChildren().addAll(scanner, printerBody, screenReady, hi, cheater, paper, smile1, smile2, smile3, smile4, text, blinker.getBlinker(), fadeOverlay);
         
         FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(1.5), fadeOverlay);
-        sceneFadeIn.setFromValue(1.0); 
-        sceneFadeIn.setToValue(0.0);   
+        sceneFadeIn.setFromValue(1.0);
+        sceneFadeIn.setToValue(0.0);
         sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay)); // Remove after fade
-        sceneFadeIn.play(); 
+        sceneFadeIn.play();
         
         scanner.setOnMouseClicked(event -> {
         	scanner.close();
@@ -101,7 +100,11 @@ public class Scene2 extends ScenePane {
         		hi.close();
         		smile1.open();
 	        	setBackground(backgroundList.get(4)); // BG_scene2_2_red_smile
-	            sceneGuider = 5;
+	        	if (getHeartBeat() != null) {
+                    getHeartBeat().setVolume(0.4);
+                    getHeartBeat().play();
+                }
+	        	sceneGuider = 5;
         	}
         });
         
@@ -135,18 +138,18 @@ public class Scene2 extends ScenePane {
         });
         
         smile1.setOnMouseClicked(event -> {
-        	if (sceneGuider == 5) {
-        		smile1.close();
-        		cheater.open();
-        		setBackground(backgroundList.get(5)); 
-        		sceneGuider = 6;
-        	} else if (sceneGuider == 8) {
-        		smile1.close();
-        		paper.open();
-        		setBackground(backgroundList.get(3)); 
-        		sceneGuider = 9;
-        	}
-        }); // BG_scene2_2_green
+            if (sceneGuider == 5) {
+                smile1.close();
+                cheater.open();
+                setBackground(backgroundList.get(5));
+                sceneGuider = 6;
+            } else if (sceneGuider == 8) {
+                smile1.close();
+                paper.open();
+                setBackground(backgroundList.get(3));
+                sceneGuider = 9;
+            }
+        });
         
         smile2.setOnMouseClicked(event -> { 
         	if (sceneGuider == 10) {
@@ -154,31 +157,39 @@ public class Scene2 extends ScenePane {
         		paper.open();
         		setBackground(backgroundList.get(3)); 
         		sceneGuider = 11;
+        		if (getHeartBeat() != null) {
+                    getHeartBeat().setVolume(0.8);
+                }
+                
         	}
         }); // BG_scene2_2_green
         
         smile3.setOnMouseClicked(event -> {
-        	if (sceneGuider == 12) {
-        		smile4.setOpacity(1);
-	            smile3.onClick();
-	            smile3.close();
-	            
-	        	new Thread(() -> {
-	        		try {
-	                    Thread.sleep(3000); // Hold for 3 seconds
-	                } catch (InterruptedException e) {
-	                    Thread.currentThread().interrupt();
-	                }
-	        		Platform.runLater(() -> {
-	       				this.setNextScene(new Scene3());
-	       				if (this.nextScene != null) { // Ensure nextScene is not null
-	       					GameLogic.getStage().setScene(this.nextScene);
-	       				} else {
-	       					System.err.println("Next scene is not set!");
-	       				}
-	       			});
-        		}).start();
-        	}
+            if (sceneGuider == 12) {
+                smile4.setOpacity(1);
+                smile3.onClick();
+                smile3.close();
+                
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(3000); // Hold for 3 seconds
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    Platform.runLater(() -> {
+                        this.setNextScene(new Scene3());
+                        if (this.nextScene != null) { // Ensure nextScene is not null
+                            GameLogic.getStage().setScene(this.nextScene);
+                        } else {
+                            System.err.println("Next scene is not set!");
+                        }
+                        
+                        if (getHeartBeat() != null) {
+                            getHeartBeat().stop();
+                        }
+                    });
+                }).start();
+            }
         });
 	}
 }
