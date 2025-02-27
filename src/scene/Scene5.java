@@ -84,19 +84,11 @@ public class Scene5 extends ScenePane {
 		timetohavefun.close();
 		welcomestupid.close();
 		
-//		this.getChildren().addAll(
-//				ties[0], ties[1], ties[2], ties[3], ties[4], ties[5], ties[6],
-//				ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6],
-//				comsmile[0], comsmile[1], comsmile[2], 
-//				projector[0], projector[1], 
-//				blackscreen, keyboard, monitor, mouse,
-//				timetohavefun, welcomestupid
-//		);
-		this.getChildren().addAll(ties);
-		this.getChildren().addAll(ps);
-		this.getChildren().addAll(comsmile);
-		this.getChildren().addAll(projector);
-		this.getChildren().addAll(				 
+		this.getChildren().addAll(
+				ties[0], ties[1], ties[2], ties[3], ties[4], ties[5], ties[6],
+				ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6],
+				comsmile[0], comsmile[1], comsmile[2], 
+				projector[0], projector[1], 
 				blackscreen, keyboard, monitor, mouse,
 				timetohavefun, welcomestupid
 		);

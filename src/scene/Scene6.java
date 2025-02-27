@@ -72,19 +72,34 @@ public class Scene6 extends ScenePane {
 		
 		
 		this.getChildren().addAll(eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission);
-		hide((ArrayList<ImageObject>) Arrays.asList( eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission));
+
+		eye.close();
+		alert1.close();
+		alert2.close();
+		gradeletter.close();
+		halfeye.close();
+		head_left.close();
+		head_mid.close();
+		head_right.close();
+		left.close();
+		mid.close();
+		right.close();
+		letterA.close();
 		
+		
+		// where to use
+		attend.close();
+		group_mem.close();
+		showrank.close();
+		submission.close();
 		
 		this.setOnMouseClicked(event -> { // this should activate by jor?
 				this.setBackground(backgrounds[2]);
-//				this.getChildren().add(eye);
 				eye.open();
 				this.setOnMouseClicked(null);
 		});
 		
 		eye.setOnMouseClicked(event -> {
-//			this.getChildren().remove(eye);
-//			this.getChildren().add(alert1);
 			eye.close();
 			alert1.open();
 			// where is down?
@@ -92,15 +107,11 @@ public class Scene6 extends ScenePane {
 		
 		alert1.setOnMouseClicked(event -> {
 			alert1.close();
-//			this.getChildren().remove(alert1);
 			this.setBackground(backgrounds[3]);
-//			this.getChildren().add(halfeye);
 			halfeye.open();
 		});
 		
 		halfeye.setOnMouseClicked(event -> {
-//			this.getChildren().remove(halfeye);
-//			this.getChildren().addAll(alert2, gradeletter);
 			halfeye.close();
 			alert2.open();
 			gradeletter.open();
@@ -108,54 +119,57 @@ public class Scene6 extends ScenePane {
 		
 		gradeletter.setOnMouseClicked(event -> {
 			gradeletter.close();
-//			this.getChildren().remove(gradeletter);
 			this.setBackground(backgrounds[4]);
-//			this.getChildren().add(letterA);
 			letterA.open();
 		});
 		
 		letterA.setOnMouseClicked(event -> {
-			
-//			this.getChildren().clear();
+			letterA.close();
+			alert2.close();
 			sceneBlink(5);
 		});
 		
 		left.setOnMouseClicked(event -> {
-//			this.getChildren().remove(left);
-//			this.getChildren().add(head_left);
-			
+			left.close();
+			head_left.open();
 			countDown--;
 		});
 		
 		mid.setOnMouseClicked(event -> {
-			this.getChildren().remove(mid);
-			this.getChildren().add(head_mid);
+			mid.close();
+			head_mid.open();
 			countDown--;
 		});
 		
 		right.setOnMouseClicked(event -> {
-			this.getChildren().remove(right);
-			this.getChildren().add(head_right);
+			right.close();
+			head_right.open();
 			countDown--;
 		});
 		
 		head_left.setOnMouseClicked(event -> {
 			if (countDown == 0) {
-				this.getChildren().removeAll(head_left, head_right, head_mid);
+				head_left.close();
+				head_mid.close();
+				head_right.close();
 				sceneBlink3(5);
 			}
 		});
 		
 		head_mid.setOnMouseClicked(event -> {
 			if (countDown == 0) {
-				this.getChildren().removeAll(head_left, head_right, head_mid);
+				head_left.close();
+				head_mid.close();
+				head_right.close();
 				sceneBlink3(5);
 			}	
 		});
 
 		head_right.setOnMouseClicked(event -> {
 			if (countDown == 0) {
-				this.getChildren().removeAll(head_left, head_right, head_mid);
+				head_left.close();
+				head_mid.close();
+				head_right.close();
 				sceneBlink3(5);
 			}
 		});
@@ -170,19 +184,12 @@ public class Scene6 extends ScenePane {
         sceneFadeIn.setDelay(Duration.seconds(2));
         sceneFadeIn.setOnFinished(event -> {
         	this.getChildren().remove(fadeOverlay);
-        	eye.open();
-        	eye.setOpacity(0);
+        	eye.setMouseTransparent(false);
         	this.setCursor(Cursor.DEFAULT);
         	
         });
         this.setCursor(Cursor.HAND);
         sceneFadeIn.play(); 
-	}
-	
-	private void hide(ArrayList<ImageObject> imgO) {
-		for (int i=0; i<imgO.size(); i++) {
-			imgO.get(i).close();
-		}
 	}
 	
     private void sceneBlink(int durationSeconds) {
@@ -207,7 +214,9 @@ public class Scene6 extends ScenePane {
 
                 Platform.runLater(() -> {
                     setBackground(backgrounds[1]);
-                    this.getChildren().addAll(left, right, mid);
+                    left.open();
+                    mid.open();
+                    right.open();
                 });
             }
         });
