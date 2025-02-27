@@ -50,9 +50,9 @@ public class Scene4 extends ScenePane {
        text2 = new ImageObject("scene4/object/text2.png");
        door = new ImageObject("scene4/object/door.png");
        choice1 = new NoisyObject("scene4/object/C1.png", "scene2/sound/blood.mp3");
-       doorSound = new NoisyObject("", "scene4/sound/squeky-door-open-113212.mp3");
+       doorSound = new NoisyObject("", "scene4/sound/squeaky-door-open-113212.mp3");
        
-       this.getChildren().add(door);
+       this.getChildren().add(door); 
        startTextFade(text);
        
        door.setOnMouseClicked(event -> {
@@ -100,6 +100,7 @@ public class Scene4 extends ScenePane {
         }
         
         NoisyObject scream = new NoisyObject("", "scene1/sound/Jumpscar.mp3");
+        scream.getMediaPlayer().setVolume(0.7);
         scream.onClick();
         
         new Thread(() -> {

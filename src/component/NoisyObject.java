@@ -48,4 +48,8 @@ public class NoisyObject extends ImageObject{
 		}
 	}
 	
+	public MediaPlayer getMediaPlayer() {
+		return noise;
+	}
+	
 }
