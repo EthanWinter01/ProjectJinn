@@ -5,32 +5,44 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Blinker {
-	public Rectangle blackScene;
-	// blinker / fade 
-	
-	public Blinker() {
-	    blackScene = new Rectangle(900, 650);
-	    blackScene.setFill(Color.BLACK);
-	    blackScene.setMouseTransparent(true);
-	    
-	    Thread blinkThread = new Thread(() -> {
-	        try {
-	            while (true) {
-	                Platform.runLater(() -> blackScene.setOpacity(0.1));
-	                Thread.sleep(15000);
-	                Platform.runLater(() -> blackScene.setOpacity(1.0));
-	                Thread.sleep(20);
-	            }
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-	    });
-	    blinkThread.setDaemon(true);
-	    blinkThread.start();
-	}
 
-	public Rectangle getBlinker() {
-		return blackScene;
-	}
-	
+    private static final double FADE_IN_OPACITY = 1.0;
+    private static final double FADE_OUT_OPACITY = 0.1;
+    private static final long FADE_IN_DURATION = 15000;  
+    private static final long FADE_OUT_DURATION = 20;    
+    
+    private final Rectangle blackScene;  
+
+    public Blinker() {
+        blackScene = new Rectangle(900, 650);
+        blackScene.setFill(Color.BLACK);
+        blackScene.setMouseTransparent(true); 
+        blackScene.setOpacity(FADE_OUT_OPACITY);  
+        
+        startBlinking();
+    }
+
+    private void startBlinking() {
+        
+        Thread blinkThread = new Thread(() -> {
+            try {
+                while (true) {
+                    
+                    Platform.runLater(() -> blackScene.setOpacity(FADE_OUT_OPACITY));
+                    Thread.sleep(FADE_IN_DURATION); 
+
+                    Platform.runLater(() -> blackScene.setOpacity(FADE_IN_OPACITY));
+                    Thread.sleep(FADE_OUT_DURATION); 
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        blinkThread.setDaemon(true); 
+        blinkThread.start();
+    }
+
+    public Rectangle getBlinker() {
+        return blackScene;
+    }
 }

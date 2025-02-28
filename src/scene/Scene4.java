@@ -56,7 +56,7 @@ public class Scene4 extends ScenePane {
        }
        doorSound = new NoisyObject("", "scene4/sound/squeaky-door-open-113212.mp3");
        
-       this.getChildren().addAll(door, choice[0], choice[1], choice[2], choice[3], choice[4], choice[5], doorSound);
+       this.getChildren().addAll(door,doorSound, choice[0], choice[1], choice[2], choice[3], choice[4], choice[5]);
        door.close();
        doorSound.close();
        
@@ -66,9 +66,15 @@ public class Scene4 extends ScenePane {
            startTextFade(text2, 1);
        });
        
+       choice[0].setOnMouseClicked(event -> {});
+       choice[1].setOnMouseClicked(event -> {});
+       choice[2].setOnMouseClicked(event -> {});
+       choice[3].setOnMouseClicked(event -> {});
+       choice[4].setOnMouseClicked(event -> {});
        choice[5].setOnMouseClicked(event -> handleCorrectClick());
        
        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+//       fadeOverlay.setMouseTransparent(true);
 		this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
 		FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
        sceneFadeIn.setFromValue(1.0); 
@@ -90,6 +96,7 @@ public class Scene4 extends ScenePane {
         countdownPane = new StackPane(countdownLabel);
         countdownPane.setAlignment(Pos.CENTER);
         countdownPane.setPrefSize(900, 650);
+        countdownPane.setMouseTransparent(true);
         this.getChildren().add(countdownPane);
 
         countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -118,7 +125,7 @@ public class Scene4 extends ScenePane {
             getHeartBeat().stop();
         }
         
-        NoisyObject scream = new NoisyObject("", "scene2/sound/Jumpscar.mp3");
+        NoisyObject scream = new NoisyObject("", "scene1/sound/Jumpscar.mp3");
         scream.onClick();
         
         new Thread(() -> {
@@ -142,8 +149,17 @@ public class Scene4 extends ScenePane {
         this.setBackground(next_background);
         
         doorSound.onClick();
-        door.setOnMouseClicked(event -> goToNextScene());
-        this.getChildren().add(door);
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            Platform.runLater(() -> {
+                this.setNextScene(new Scene5());
+                GameLogic.getStage().setScene(this.nextScene);
+            });
+        }).start();
     }
 
     private void goToNextScene() {

@@ -7,66 +7,74 @@ import component.NoisyObject;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import logic.GameLogic;
+import util.SceneTransitionHelper;
 
 public class Scene0 extends ScenePane {
 
-	private ImageObject start;
-	
-	public Scene0() {
-		super("home/BG_home.png");
-		   	
-    	start = new ImageObject("home/object/start.png", 600, 460);
-    	start.setFitWidth(300);
-    	start.setFitHeight(300);
-    	start.setOpacity(0);
+    private static final String BACKGROUND_PATH = "home/BG_home.png";
+    private static final String MUSIC_FILE = "background_S0toS4.mp3";
 
+    private static final String[] OBJECTS = {
+        "home/object/label.png",
+        "home/object/tree.png",
+        "home/object/building.png"
+    };
+    
+    private static final String[] SOUND_FILES = {
+        "home/sound/haha(baby).mp3",
+        "home/sound/haha(oldman).mp3",
+        "home/sound/haha(women).mp3"
+    };
 
-    	NoisyObject label = new NoisyObject("home/object/label.png", "home/sound/haha(baby).mp3");
-    	label.setOnMouseClicked(event -> {
-    		label.onClick();
-    	});
-    	
-    	NoisyObject tree = new NoisyObject("home/object/tree.png", "home/sound/haha(oldman).mp3");
-    	tree.setOnMouseClicked(event -> {
-    		tree.onClick();
-    	});
-    	
-    	NoisyObject building = new NoisyObject("home/object/building.png", "home/sound/haha(women ).mp3");
-    	building.setOnMouseClicked(event -> {
-    		building.onClick();
-    	});
-    	
-    	Blinker blinker = new Blinker();
-    	this.getChildren().addAll(start, label, tree, building, blinker.getBlinker());
-    	
-    	start.setOnMouseEntered(event -> {
-	   		start.setOpacity(1); // Make the image fully visible
-            start.setCursor(Cursor.HAND);
-	    });
-	   	start.setOnMouseExited(event -> {
-	    	start.setOpacity(0); 
-	        start.setCursor(Cursor.DEFAULT);
-	    });
-    	start.setOnMouseClicked(event -> {
-    	    new Thread(() -> {
-    	        try {
-    	            Thread.sleep(100); // Small delay to ensure smooth transition
-    	        } catch (InterruptedException e) {
-    	            e.printStackTrace();
-    	        }
-    	        Platform.runLater(() -> {
-    	        	this.setNextScene(new Scene1_1());
-    	            if (this.nextScene != null) { // Ensure nextScene is not null
-    	            	GameLogic.getStage().setScene(this.nextScene);
-    	                tree.onClick();
-    	            } else {
-    	                System.err.println("Next scene is not set!");
-    	            }
-    	        });
-    	    }).start();
-    	});
-    	
-    	BackgroundMusic.playMusic("home/sound/BGM_home.mp3");
-	}
+    private ImageObject start;
 
+    public Scene0() {
+        super(BACKGROUND_PATH);
+        
+        start = createStartObject();
+        
+        Blinker blinker = new Blinker();
+        
+        this.getChildren().addAll(start, blinker.getBlinker());
+        
+        for (int i = 0; i < OBJECTS.length; i++) {
+            NoisyObject noisyObject = new NoisyObject(OBJECTS[i], SOUND_FILES[i]);
+            noisyObject.setOnMouseClicked(event -> noisyObject.onClick());
+            this.getChildren().add(noisyObject);
+        }
+
+        BackgroundMusic.playMusic(MUSIC_FILE);
+    }
+
+    private ImageObject createStartObject() {
+        ImageObject startObj = new ImageObject("home/object/start.png", 600, 460);
+        startObj.setFitWidth(300);
+        startObj.setFitHeight(300);
+        startObj.setOpacity(0);
+
+        startObj.setOnMouseEntered(event -> {
+            startObj.setOpacity(1); 
+            startObj.setCursor(Cursor.HAND);
+        });
+
+        startObj.setOnMouseExited(event -> {
+            startObj.setOpacity(0);
+            startObj.setCursor(Cursor.DEFAULT);
+        });
+
+        startObj.setOnMouseClicked(event -> {
+            SceneTransitionHelper.transitionToScene(() -> {
+                Platform.runLater(() -> {
+                    this.setNextScene(new Scene1_1());
+                    if (this.nextScene != null) {
+                        GameLogic.getStage().setScene(this.nextScene);
+                    } else {
+                        System.err.println("Next scene is not set!");
+                    }
+                });
+            }, 100);
+        });
+
+        return startObj;
+    }
 }
