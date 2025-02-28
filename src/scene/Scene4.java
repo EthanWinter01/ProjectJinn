@@ -37,7 +37,7 @@ import logic.GameLogic;
 public class Scene4 extends ScenePane {
     private Background next_background;
     private ImageObject text, text2, door;
-    private NoisyObject choice1, doorSound;
+    private NoisyObject choice[], doorSound;
     private Timeline countdownTimeline;
     private Label countdownLabel;
     private int remainingSeconds;
@@ -49,12 +49,15 @@ public class Scene4 extends ScenePane {
        text = new ImageObject("scene4/object/text1.png");
        text2 = new ImageObject("scene4/object/text2.png");
        door = new ImageObject("scene4/object/door.png");
-       choice1 = new NoisyObject("scene4/object/C1.png", "scene2/sound/blood.mp3");
-       doorSound = new NoisyObject("", "scene4/sound/squeky-door-open-113212.mp3");
+       choice = new NoisyObject[6];
+       for (int i=0; i<6; i++) {
+    	   choice[i] = new NoisyObject("scene4/object/C"+(i+1)+".png", "scene2/sound/blood.mp3");
+    	   choice[i].close();
+       }
+       doorSound = new NoisyObject("", "scene4/sound/squeaky-door-open-113212.mp3");
        
-       this.getChildren().addAll(door, choice1, doorSound);
+       this.getChildren().addAll(door, choice[0], choice[1], choice[2], choice[3], choice[4], choice[5], doorSound);
        door.close();
-       choice1.close();
        doorSound.close();
        
        door.setOnMouseClicked(event -> {
@@ -63,7 +66,7 @@ public class Scene4 extends ScenePane {
            startTextFade(text2, 1);
        });
        
-       choice1.setOnMouseClicked(event -> handleCorrectClick());
+       choice[5].setOnMouseClicked(event -> handleCorrectClick());
        
        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
 		this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
@@ -100,12 +103,16 @@ public class Scene4 extends ScenePane {
             }
         }));
         countdownTimeline.setCycleCount(Timeline.INDEFINITE);
+        for (int i=0; i<6; i++)
+        	choice[i].open();
         countdownTimeline.play();
     }
 
     private void handleTimeout() {
         Rectangle blackScreen = new Rectangle(900, 650, Color.BLACK);
         this.getChildren().add(blackScreen);
+        for (int i=0; i<6; i++)
+     	   choice[i].close();
         
         if (getHeartBeat() != null) {
             getHeartBeat().stop();
@@ -128,6 +135,8 @@ public class Scene4 extends ScenePane {
     }
 
     private void handleCorrectClick() {
+    	for (int i=0; i<6; i++)
+       	   choice[i].close();
         countdownTimeline.stop();
         this.getChildren().remove(countdownPane);
         this.setBackground(next_background);
