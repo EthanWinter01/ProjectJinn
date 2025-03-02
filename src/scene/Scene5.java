@@ -169,6 +169,7 @@ public class Scene5 extends ScenePane {
 					sceneGuider++;
 				} else if (sceneGuider == 13) {
 //					System.out.println("alarm clock");
+					
 					sceneGuider++;
 					GameLogic.getStage().setScene((new Scene6()).getOverall());
 				}
