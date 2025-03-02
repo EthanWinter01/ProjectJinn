@@ -17,7 +17,7 @@ public class BackgroundMusic {
         if (soundUrl != null) {
             Media sound = new Media(soundUrl.toString());
             mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.setVolume(0.3);
+            mediaPlayer.setVolume(0.4);
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             new Thread(() -> {
 	        	Platform.runLater(() -> {

@@ -33,7 +33,7 @@ public class Scene1_2 extends ScenePane {
     
         busbell = new ImageObject("scene1/object/busbell.png");
         chair = new ImageObject("scene1/object/chair.png");
-        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/Jumpscare2.mp3");
+        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/ghost-appear.mp3");
         hands = new NoisyObject("scene1/object/hands.png", "scene1/sound/hand/paste.mp3");
         mirror = new ImageObject("scene1/object/mirror.png");
         
@@ -66,6 +66,7 @@ public class Scene1_2 extends ScenePane {
         
         if (chairClicked && mirrorClicked && blinked && !ghostAppeared) {
             ghost.setOpacity(1.0);
+            ghost.getMediaPlayer().setStopTime(Duration.seconds(0.5));
             ghost.onClick();
             FadeTransition ghostFadeOut = new FadeTransition(Duration.seconds(0.1),  ghost) ;
             ghostFadeOut.setDelay(Duration.millis(500));

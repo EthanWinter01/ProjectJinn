@@ -4,7 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class ImageObject extends ImageView {
+public class ImageObject extends ImageView implements Clickable {
 	
 	public ImageObject(String fileName) {
 		super(new Image(ClassLoader.getSystemResource(fileName).toString()));
