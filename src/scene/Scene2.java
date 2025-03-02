@@ -37,7 +37,7 @@ public class Scene2 extends ScenePane {
         screenReady = new ImageObject("scene2/object/screen_ready.png");
         smile1 = new ImageObject("scene2/object/smile_1.png");
         smile2 = new ImageObject("scene2/object/smile_2.png");
-        smile3 = new NoisyObject("scene2/object/smile_3.png", "scene1/sound/Jumpscare2.mp3", 10);
+        smile3 = new NoisyObject("scene2/object/smile_3.png", "scene2/sound/scar.mp3", 10);
         smile4 = new ImageObject("scene2/object/smile_4.png");
         text = new ImageObject("scene2/object/text.png");
         startTextFade(text);
