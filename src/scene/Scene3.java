@@ -31,9 +31,9 @@ public class Scene3 extends ScenePane {
 		
 		bg1_sink = new NoisyObject("scene3/object/bg1_sink.png", "scene3/sound/open_faucet2.mp3", 500);
 		crack = new NoisyObject("scene3/object/crack.png", "scene3/sound/glass-breaking.mp3", 500);
-		faucet = new NoisyObject("scene3/object/faucet.png", "scene3/sound/open_faucet1.mp3", 500);
+		faucet = new NoisyObject("scene3/object/faucet.png", "scene3/sound/open_faucet2.mp3", 500);
 		oneghost = new NoisyObject("scene3/object/oneghost.png", "scene3/sound/turn_on_light.mp3", 500);
-		optionalghost = new NoisyObject("scene3/object/optionalghost.png", "scene2/sound/Scream.mp3");
+		optionalghost = new NoisyObject("scene3/object/optionalghost.png", "scene3/sound/jtoilet.mp3");
 		text = new ImageObject("scene3/object/text.png");
 		tryMe = new NoisyObject("scene3/object/tryme.png", "scene2/sound/blood.mp3");
 		urinal = new NoisyObject("scene3/object/urinal.png", "scene3/sound/toilet.mp3");
