@@ -13,26 +13,21 @@ public class Scene1_1 extends ScenePane {
     public Scene1_1() {
         super("scene1/BG_scene1_1.png");
 
-        // Create objects for the scene
         NoisyObject building = createNoisyObject("scene1/object/building.png", "scene1/sound/crow.mp3", 800);
         NoisyObject bushtree = createNoisyObject("scene1/object/bushtree.png", "scene1/sound/treemove.mp3", 800);
         NoisyObject bus = createNoisyObject("scene1/object/bus.png", "scene1/sound/car/car-horn1.mp3", 500);
         ImageObject text = new ImageObject("scene1/object/text.png");
         NoisyObject doorofbus = createNoisyObject("scene1/object/doorofbus.png", "scene1/sound/bus_door.mp3", 500);
         
-        // Create and add Blinker (screen blinking effect) to the scene
         Blinker blinker = new Blinker();
         this.getChildren().addAll(building, bushtree, bus, doorofbus, text, blinker.getBlinker());
 
-        // Create and add the fade-in effect
         FadeInEffect fadeInEffect = new FadeInEffect(900, 650, javafx.scene.paint.Color.BLACK);
         this.getChildren().add(fadeInEffect.getFadeOverlay());
         fadeInEffect.playFadeInEffect();
 
-        // Start text fade animation
         startTextFade(text);
 
-        // Set up mouse click event listeners
         setupClickEvents(building, bushtree, bus, doorofbus);
     }
 
