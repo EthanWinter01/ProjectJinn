@@ -15,6 +15,7 @@ import logic.GameLogic;
 
 public class Scene2 extends ScenePane {
 
+	
     private int sceneGuider = 0;
     private ArrayList<Background> backgroundList;
     private ImageObject screenReady, smile1, smile2, smile4, text;

@@ -11,7 +11,7 @@ public class Blinker {
     private static final long FADE_IN_DURATION = 15000;  
     private static final long FADE_OUT_DURATION = 20;    
     
-    private final Rectangle blackScene;  
+    public final Rectangle blackScene;  
 
     public Blinker() {
         blackScene = new Rectangle(900, 650);
