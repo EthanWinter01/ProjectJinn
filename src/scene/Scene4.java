@@ -51,9 +51,10 @@ public class Scene4 extends ScenePane {
        door = new ImageObject("scene4/object/door.png");
        choice = new NoisyObject[6];
        for (int i=0; i<6; i++) {
-    	   choice[i] = new NoisyObject("scene4/object/C"+(i+1)+".png", "scene2/sound/blood.mp3");
+    	   choice[i] = new NoisyObject("scene4/object/C"+(i+1)+".png", "scene4/sound/incorrect.mp3");
     	   choice[i].close();
        }
+       choice[5].setMediaPlayer("scene4/sound/correct.mp3");
        doorSound = new NoisyObject("", "scene4/sound/squeaky-door-open-113212.mp3");
        
        this.getChildren().addAll(door,doorSound, choice[0], choice[1], choice[2], choice[3], choice[4], choice[5]);
@@ -66,11 +67,11 @@ public class Scene4 extends ScenePane {
            startTextFade(text2, 1);
        });
        
-       choice[0].setOnMouseClicked(event -> {});
-       choice[1].setOnMouseClicked(event -> {});
-       choice[2].setOnMouseClicked(event -> {});
-       choice[3].setOnMouseClicked(event -> {});
-       choice[4].setOnMouseClicked(event -> {});
+       choice[0].setOnMouseClicked(event -> choice[0].onClick());
+       choice[1].setOnMouseClicked(event -> choice[1].onClick());
+       choice[2].setOnMouseClicked(event -> choice[2].onClick());
+       choice[3].setOnMouseClicked(event -> choice[3].onClick());
+       choice[4].setOnMouseClicked(event -> choice[4].onClick());
        choice[5].setOnMouseClicked(event -> handleCorrectClick());
        
        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
@@ -148,24 +149,15 @@ public class Scene4 extends ScenePane {
         this.getChildren().remove(countdownPane);
         this.setBackground(next_background);
         
-        doorSound.onClick();
-        new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            Platform.runLater(() -> {
-                this.setNextScene(new Scene5());
-                GameLogic.getStage().setScene(this.nextScene);
-            });
-        }).start();
+        goToNextScene();
     }
 
     private void goToNextScene() {
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
+                
+                
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

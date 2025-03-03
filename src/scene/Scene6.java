@@ -3,6 +3,7 @@ package scene;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import component.BackgroundMusic;
 import component.ImageObject;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -12,28 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import logic.GameLogic;
-/*
-Scene 6
-หน้า BG_scene6_1
-	กด jor แล้วพาเข้า BG_scene6_2
-หน้า BG_scene6_2
-	กดeye แล้ว alert 1 โผล่
-	กดdown แล้วเข้า หน้า BG_scene6_3
-หน้า BG_scene6_3
-	กดhalfeye แล้ว alert2 โผล่
-	ถ้ากด gradeletter จะพาเข้า BG_scene6_4
-หน้า BG_scene6_4
-	ถ้ากด letterA จะพาเข้าแฟลชที่เกิดจาก BG_scene6_5 + BG_scene6_6
-	หยุดแฟลชแล้วจะไปเข้าหน้าBG_scene_zone
-หน้า BG_scene_zone
-	ถ้ากดleft จะมี head_leftขึ้น
-	ถ้ากดmid จะมี head_midขึ้น
-	ถ้ากด right จะมี head_rightขึ้น
-	เมื่อครบทุบ head ถ้ากดheadใดheadหนึ่งก็จะตัดเข้า แฟลช
-	แฟลชเกิดจาก BG_scene6_7 + BG_scene6_8 + BG_scene6_9
-	จบแฟลชให้ตัดเข้าหน้า end_credit
-	
-*/
+
 public class Scene6 extends ScenePane {
 
 	private Background[] backgrounds;
@@ -70,6 +50,9 @@ public class Scene6 extends ScenePane {
 		showrank = new ImageObject("scene6/object/showrank.png");
 		submission = new ImageObject("scene6/object/submission.png");
 		
+		
+		BackgroundMusic.stopMusic();
+		BackgroundMusic.playMusic("scene6/sound/french-coutryside-sunrise-17100.mp3");
 		
 		this.getChildren().addAll(eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission);
 

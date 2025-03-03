@@ -6,6 +6,7 @@ import component.NoisyObject;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -171,7 +172,7 @@ public class Scene5 extends ScenePane {
 //					System.out.println("alarm clock");
 					
 					sceneGuider++;
-					GameLogic.getStage().setScene((new Scene6()).getOverall());
+					goToNextScene();
 				}
 			});
 		}
@@ -230,6 +231,30 @@ public class Scene5 extends ScenePane {
 	    });
 
 	    glitchEffect.play();
+	}
+
+	private void goToNextScene() {
+	    new Thread(() -> {
+	        try {
+	            Thread.sleep(3000); // Pause for 3 seconds before blackout
+	            Platform.runLater(() -> {
+	                BackgroundMusic.stopMusic();
+	                BackgroundMusic.playMusic("scene6/sound/heartdie.mp3");
+	                Rectangle blackOut = new Rectangle(900, 650, Color.BLACK);
+	                this.getChildren().add(blackOut);
+	            });
+
+	            Thread.sleep(5000); // Wait for 5 seconds on blackout
+	            
+	            Platform.runLater(() -> {
+	                this.setNextScene(new Scene6()); // Fix: It should transition to Scene6, not Scene5 again
+	                GameLogic.getStage().setScene(this.nextScene);
+	            });
+
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    }).start();
 	}
 
 }
