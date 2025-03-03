@@ -14,23 +14,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import logic.GameLogic;
 
-/*
-Scene 5
-หน้า BG_scene5_1
-	กด projector1 แล้ว projector2 โผล่ทับ
-	กด monitor แล้วพาเข้าหน้า BG_scene5_2 
-หน้า BG_scene5_2
-	เกิดแฟลชระหว่าง comsmile_1 comsmile_2 comsmile_3 สักแปปแล้วไปหน้าBG_blackscreen
-หน้า BG_blackscreen
-	กดblackscreen แล้วมี welcomestupid
-	กด welcomestupid แล้วพาเข้า BG_scene5_red
-Scene 5
-	หน้า BG_scene5_red
-	กด timetohavefun แล้วมี tie ทั้ง 7 อันโผล่มาพร้อมกัน
-	ถ้า กด tie 1 ->p1โผล่, กด tie 2 ->p2 โผล่, ...., กด tie 7 ->p7 โผล่
-	โผล่ครบให้ตัดเข้าซีน6 โดยมีเสียงนาฬิกาปลุกดังเป็นการบอกว่าตื่น	
-*/
-
 public class Scene5 extends ScenePane {
 
 	private int sceneGuider = 0;
