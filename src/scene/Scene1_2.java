@@ -34,6 +34,7 @@ public class Scene1_2 extends ScenePane {
         busbell = new ImageObject("scene1/object/busbell.png");
         chair = new ImageObject("scene1/object/chair.png");
 <<<<<<< HEAD
+<<<<<<< HEAD
        
         ghost = new NoisyObject("scene1/object/ghost.png", "scene2/sound/hshnew.mp3");
 //        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/Jumpscare2.mp3");
@@ -42,6 +43,9 @@ public class Scene1_2 extends ScenePane {
 =======
         ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/ghost-appear.mp3");
 >>>>>>> 7b6b2af4b0c20b89264750e70fd377bc49fa081d
+=======
+        ghost = new NoisyObject("scene1/object/ghost.png", "scene1/sound/hshnew.mp3");
+>>>>>>> e022e70 (update Scene1_2)
         hands = new NoisyObject("scene1/object/hands.png", "scene1/sound/hand/paste.mp3");
         mirror = new ImageObject("scene1/object/mirror.png");
         
