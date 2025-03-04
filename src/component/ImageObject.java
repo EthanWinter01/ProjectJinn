@@ -29,9 +29,19 @@ public class ImageObject extends ImageView implements Clickable {
 		this.setLayoutY(y);
 	}
 	
-
+	// function from Clickable interface
 	public void open() {
 		this.setOpacity(1.0);
+		this.setMouseTransparent(false);
+	}
+	
+	public void viewOnly() {
+		this.setOpacity(1.0);
+		this.setMouseTransparent(true);
+	}
+	
+	public void clickOnly() {
+		this.setOpacity(0.0);
 		this.setMouseTransparent(false);
 	}
 	
