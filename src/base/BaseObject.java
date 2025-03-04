@@ -31,9 +31,15 @@ public class BaseObject extends ImageView implements Clickable {
 		this.setLayoutY(y);
 	}
 	
-	public void onClick() {
+	public void onClick(Runnable eventHandler) {
+		this.setOnMouseClicked(event -> {
+			if (this instanceof AudibleObject) {
+				((AudibleObject) this).playAudio();
+			}
+			eventHandler.run();
+		});
 		// use for debugging
-		System.out.println("You are clicking on object from"+getResPath(false));
+		// System.out.println("You are clicking on object from"+getResPath(false));
 	}
 	
 	@Override
