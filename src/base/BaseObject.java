@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 public class BaseObject extends ImageView implements Clickable {
 	// Fields
 	private String resPath;
+	protected Blinker blinker;
 	
 	public final static int SCENE_WIDTH = 900;
 	public final static int SCENE_HEIGHT = 650;
@@ -19,7 +20,8 @@ public class BaseObject extends ImageView implements Clickable {
 	
 	public BaseObject(String resPath, double x, double y) { 
 		super(new Image(ClassLoader.getSystemResource(resPath).toString()));
-		this.setFitHeight(SCENE_WIDTH);
+		this.setFitWidth(SCENE_WIDTH);
+		this.setFitHeight(SCENE_HEIGHT);
 		this.setPreserveRatio(true);
 		this.setCursor(Cursor.HAND);
 		setPosition(x, y);
@@ -36,7 +38,8 @@ public class BaseObject extends ImageView implements Clickable {
 			if (this instanceof AudibleObject) {
 				((AudibleObject) this).playAudio();
 			}
-			eventHandler.run();
+			if (eventHandler != null)
+				eventHandler.run();
 		});
 		// use for debugging
 		// System.out.println("You are clicking on object from"+getResPath(false));
@@ -46,24 +49,28 @@ public class BaseObject extends ImageView implements Clickable {
 	public void open() {
 		this.setOpacity(1.0);
 		this.setMouseTransparent(false);
+		this.setCursor(Cursor.HAND);
 	}
 
 	@Override
 	public void viewOnly() {
 		this.setOpacity(1.0);
 		this.setMouseTransparent(true);
+		this.setCursor(Cursor.DEFAULT);
 	}
 
 	@Override
 	public void clickOnly() {
 		this.setOpacity(0.0);
 		this.setMouseTransparent(false);
+		this.setCursor(Cursor.HAND);
 	}
 
 	@Override
 	public void close() {
 		this.setOpacity(0.0);
 		this.setMouseTransparent(true);
+		this.setCursor(Cursor.DEFAULT);
 	}
 
 	// Getters & Setters

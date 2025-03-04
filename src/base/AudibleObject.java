@@ -15,13 +15,13 @@ public class AudibleObject extends BaseObject {
 	private final static int DEFAULT_PAUSE = 2000; // milliseconds
 
 	// Constructor
-	public AudibleObject(String resPath) {
-		super(resPath);
-		
+	public AudibleObject(String resPath, String audioPath) {
+		this(resPath, audioPath, DEFAULT_PAUSE);
 	}
 
-	public AudibleObject(String resPath, String soundPath) {
+	public AudibleObject(String resPath, String audioPath, int pause) {
 		super(resPath);
+		this.setMediaPlayer(audioPath, pause);
 	}
 	
 	// Method
