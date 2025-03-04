@@ -2,8 +2,7 @@ package base;
 
 import java.net.URL;
 
-import component.BackgroundMusic;
-import component.ImageObject;
+import base.BackgroundAudio;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,11 +17,11 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import logic.GameLogic;
 
-public class BaseScene extends Pane {
+abstract public class BaseScene extends Pane {
 	// Field
 	protected Scene overall;
 	protected Scene nextScene;
-	protected BackgroundMusic backgroundMusic;
+	protected BackgroundAudio backgroundMusic;
 	protected MediaPlayer heartBeatPlayer;
 	
 	// Constructor
@@ -34,6 +33,9 @@ public class BaseScene extends Pane {
 	}
 	
 	// Method
+	protected abstract void initializeObjects();
+	protected abstract void setupEventHandlers();
+	
 	public Background createBackground(String fileName) {	
 		Image backgroundImage = new Image(ClassLoader.getSystemResource(fileName).toString());
     	BackgroundImage background = new BackgroundImage(
@@ -46,7 +48,7 @@ public class BaseScene extends Pane {
     	return new Background(background);
 	}
 	
-	protected void startTextFade(ImageObject text) {
+	protected void startTextFade(BaseObject text) {
         FadeTransition fadeOut = new FadeTransition(Duration.seconds(2), text);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
@@ -91,11 +93,11 @@ public class BaseScene extends Pane {
 		this.nextScene = nextScene.getOverall();
 	}
 
-	public BackgroundMusic getBackgroundMusic() {
+	public BackgroundAudio getBackgroundMusic() {
 		return backgroundMusic;
 	}
 
-	public void setBackgroundMusic(BackgroundMusic backgroundMusic) {
+	public void setBackgroundMusic(BackgroundAudio backgroundMusic) {
 		this.backgroundMusic = backgroundMusic;
 	}
 
