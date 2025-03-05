@@ -150,13 +150,11 @@ public class Scene3 extends BaseScene {
         crack.close();
 
         GameLogic.transition(() -> {
-        	AudibleObject afterFX = new AudibleObject("","scene3/sound/runaway_toilet.mp3");
-            afterFX.playAudio();
+        	new AudibleObject("","scene3/sound/runaway_toilet.mp3").playAudio();
         	Platform.runLater(() -> {
         		fadeOverlay.setOpacity(0.0);
         	});
         }, 2000);
-        
         
         GameLogic.transition(() -> {
         	Platform.runLater(() -> {

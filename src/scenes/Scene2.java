@@ -107,7 +107,7 @@ public class Scene2 extends BaseScene {
 
     private void handleHiClick() {
         if (sceneGuider == 4) {
-            updateScene(hi, 5, backgroundList.get(4), smile1);
+            updateScene(hi, 6, backgroundList.get(5), cheater);
             if (this.getHeartBeatPlayer() != null) {
                 this.getHeartBeatPlayer().setVolume(0.4);
                 this.getHeartBeatPlayer().play();
@@ -135,9 +135,7 @@ public class Scene2 extends BaseScene {
     }
 
     private void handleSmile1Click() {
-        if (sceneGuider == 5) {
-            updateScene(smile1, 6, backgroundList.get(5), cheater);
-        } else if (sceneGuider == 8) {
+        if (sceneGuider == 8) {
             updateScene(smile1, 9, backgroundList.get(3), paper);
         }
     }
