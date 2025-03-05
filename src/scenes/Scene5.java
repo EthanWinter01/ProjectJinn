@@ -3,13 +3,17 @@ package scenes;
 import base.BackgroundAudio;
 import base.BaseObject;
 import base.BaseScene;
-import component.BackgroundMusic;
+import base.BlackScreen;
+
+import java.awt.MediaTracker;
+
 import base.AudibleObject;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.layout.Background;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -22,12 +26,13 @@ public class Scene5 extends BaseScene {
 			"scene5/sound/pasatV2.mp3",
 			"scene6/sound/heartdie.mp3"
 	};
-		
+
     private int sceneGuider = 0;
     private BaseObject[] ties, comsmile, projector;
     private AudibleObject[] ps;
-    private BaseObject blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid;
+    private BaseObject keyboard, mouse;
     private Background[] backgrounds;
+	AudibleObject blackscreen, monitor, timetohavefun, welcomestupid;
 
     public Scene5() {
         super(BG_PATH);
@@ -44,7 +49,7 @@ public class Scene5 extends BaseScene {
         String[] bg = {"1", "2", "black", "red"};
         backgrounds = new Background[bg.length];
         for (int i = 0; i < bg.length; i++) {
-            backgrounds[i] = createBackground("scene5/BG_scene5_" + bg[i] + ".png");
+            backgrounds[i] = createBackground("scene5/BG_scene5_"+bg[i]+".png");
         }
     }
 
@@ -63,19 +68,19 @@ public class Scene5 extends BaseScene {
         }
 
         for (int i = 0; i < 3; i++) {
-            comsmile[i] = new BaseObject("scene5/object/comsmile_" + (i + 1) + ".png");
+            comsmile[i] = new BaseObject("scene5/object/comsmile_"+(i+1)+".png");
             comsmile[i].close();
         }
 
         projector[0] = new BaseObject("scene5/object/projector1.png");
         projector[1] = new BaseObject("scene5/object/projector2.png");
 
-        blackscreen = new BaseObject("scene5/object/blackscreen.png");
+        blackscreen = new AudibleObject("scene5/object/blackscreen.png", "scene5/sound/mouse_click.mp3");
         keyboard = new BaseObject("scene5/object/keyboard.png");
-        monitor = new BaseObject("scene5/object/monitor.png");
+        monitor = new AudibleObject("scene5/object/monitor.png", "scene5/sound/mouse_click.mp3");
         mouse = new BaseObject("scene5/object/mouse.png");
-        timetohavefun = new BaseObject("scene5/object/timetohavefun.png");
-        welcomestupid = new BaseObject("scene5/object/welcomestupid.png");
+        timetohavefun = new AudibleObject("scene5/object/timetohavefun.png", "scene5/sound/old_computer_click.mp3");
+        welcomestupid = new AudibleObject("scene5/object/welcomestupid.png", "scene5/sound/old_computer_click.mp3");
 
         closeObjects(blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid, projector[0], projector[1]);
         this.getChildren().addAll(ties);
@@ -99,18 +104,18 @@ public class Scene5 extends BaseScene {
                 sceneGuider = 1;
             }
         });
-        projector[0].setOnMouseClicked(event -> transitionProjector());
-        monitor.setOnMouseClicked(event -> transitionMonitor());
-        blackscreen.setOnMouseClicked(event -> transitionBlackscreen());
-        welcomestupid.setOnMouseClicked(event -> transitionWelcomestupid());
-        timetohavefun.setOnMouseClicked(event -> transitionTimeToHaveFun());
+        projector[0].onClick(() -> transitionProjector());
+        monitor.onClick(() -> transitionMonitor());
+        blackscreen.onClick(() -> transitionBlackscreen());
+        welcomestupid.onClick(() -> transitionWelcomestupid());
+        timetohavefun.onClick(() -> transitionTimeToHaveFun());
         setupTiesClickEvents();
     }
 
     private void transitionProjector() {
         if (sceneGuider == 1) {
             projector[0].close();
-            projector[1].open();
+            projector[1].viewOnly();
             monitor.open();
             sceneGuider = 2;
         }
@@ -164,11 +169,13 @@ public class Scene5 extends BaseScene {
             final int index = i;
             ties[i].setOnMouseClicked(event -> {
                 ties[index].close();
-                if (sceneGuider >= 7 && sceneGuider < 13) {
+                if (sceneGuider >= 7 && sceneGuider <= 13) {
                     ps[index].open();
+                    ps[index].getMediaPlayer().setCycleCount(MediaPlayer.INDEFINITE);
                     ps[index].playAudio();
                     sceneGuider++;
-                } else if (sceneGuider == 13) {
+                } 
+                if (sceneGuider == 14) {
                     goToNextScene();
                 }
             });
@@ -180,6 +187,14 @@ public class Scene5 extends BaseScene {
         comsmile[1].open();
         comsmile[2].open();
 
+        AudibleObject glitchNoise = new AudibleObject("", "scene5/sound/electric_shock.mp3");
+        glitchNoise.playAudio();
+        
+        Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+            glitchNoise.getMediaPlayer().stop();
+            System.out.println("MediaPlayer stopped!");
+        }));
+        
         Timeline glitchEffect = new Timeline(
             new KeyFrame(Duration.millis(100), e -> {
                 comsmile[0].setVisible(true);
@@ -207,31 +222,27 @@ public class Scene5 extends BaseScene {
             blackscreen.open();
             sceneGuider = 4;
         });
-
+        
+        stopTimeline.play();
         glitchEffect.play();
     }
 
     private void goToNextScene() {
-	    new Thread(() -> {
-	        try {
-	            Thread.sleep(3000); // Pause for 3 seconds before blackout
-	            Platform.runLater(() -> {
-	                BackgroundMusic.stopMusic();
-	                BackgroundMusic.playMusic(BG_AUDIO_PATH[2]);
-	                Rectangle blackOut = new Rectangle(900, 650, Color.BLACK);
-	                this.getChildren().add(blackOut);
-	            });
-
-	            Thread.sleep(5000); // Wait for 5 seconds on blackout
-	            
-	            Platform.runLater(() -> {
-	                toNextScene(new Scene6());
-	            });
-
-	        } catch (InterruptedException e) {
-	            Thread.currentThread().interrupt();
-	        }
-	    }).start();
+    	GameLogic.transition(() -> {
+    		Platform.runLater(() -> {
+    			for (int i=0; i<7; i++) {
+    	    		ps[i].getMediaPlayer().stop();
+    	    	}
+    			BackgroundAudio.stopAudio();
+                BackgroundAudio.playAudio(BG_AUDIO_PATH[2]);
+                this.getChildren().add(new BlackScreen());
+    		});
+    	},3000);
+    	GameLogic.transition(() -> {
+    		Platform.runLater(() -> {
+    			toNextScene(new Scene6());
+    		});
+    	},5000);
 	}
     
     private void setupSceneTransition() {

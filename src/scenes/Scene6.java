@@ -3,6 +3,7 @@ package scenes;
 import java.util.ArrayList;
 import java.util.List;
 
+import base.BackgroundAudio;
 import base.BaseObject;
 import base.BaseScene;
 import base.Blinker;
@@ -14,12 +15,15 @@ public class Scene6 extends BaseScene {
 	// Fields
 	private int sceneGuider = 0;
 	private static final String BG_PATH = "scene6/BG_scene6_1.png";
+	private static final String BG_AUDIO_PATH = "scene6/sound/french-countryside-sunrise-17100.mp3";
 	private ArrayList<Background> backgroundList;
 	private BaseObject eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission;
 		
 	// Constructor
 	public Scene6() {
 		super(BG_PATH);
+		BackgroundAudio.stopAudio();
+		BackgroundAudio.playAudio(BG_AUDIO_PATH);
 		initializeBackgrounds();
 		initializeObjects();
 		setupEventHandlers();
@@ -114,6 +118,9 @@ public class Scene6 extends BaseScene {
 
 	private void handleEyeClick(int expect) {
 		if (sceneGuider == expect) {
+			BackgroundAudio.stopAudio();
+			this.getHeartBeatPlayer().setVolume(0.5);
+			this.getHeartBeatPlayer().play();
 			eye.close();
 			alert1.open();
 			sceneGuider++;
@@ -131,6 +138,7 @@ public class Scene6 extends BaseScene {
 
 	private void handleHalfEyeClick(int expect) {
 		if (sceneGuider == expect) {
+			this.getHeartBeatPlayer().setVolume(0.8);
 			halfeye.close();
 			alert2.viewOnly();
 			gradeletter.clickOnly();
@@ -150,6 +158,7 @@ public class Scene6 extends BaseScene {
 
 	private void handleLetterAClick(int expect) {
 		if (sceneGuider == expect) {
+			this.getHeartBeatPlayer().setVolume(1.0);
 			letterA.close();
 			alert2.close();
 			screenBlink();
