@@ -116,10 +116,22 @@ public class Scene2 extends BaseScene {
     }
 
     private void handlePaperClick() {
-        if (sceneGuider == 7 || sceneGuider == 9 || sceneGuider == 11) {
-            BaseObject nextSmile = sceneGuider == 7 ? smile1 : sceneGuider == 9 ? smile2 : smile3;
-            updateScene(paper, sceneGuider + 1, backgroundList.get(2), nextSmile);
-        }
+    	if (sceneGuider == 7 || sceneGuider == 9 || sceneGuider == 11) {
+    	    BaseObject nextSmile;
+    	    switch (sceneGuider) {
+    	        case 7:
+    	            nextSmile = smile1;
+    	            break;
+    	        case 9:
+    	            nextSmile = smile2;
+    	            break;
+    	        default: // case 11
+    	        	this.getHeartBeatPlayer().setVolume(1.0);
+    	            nextSmile = smile3;
+    	            break;
+    	    }
+    	    updateScene(paper, sceneGuider + 1, backgroundList.get(2), nextSmile);
+    	}
     }
 
     private void handleSmile1Click() {
@@ -137,6 +149,7 @@ public class Scene2 extends BaseScene {
             smile3.close();
             GameLogic.transition(() -> {
             	Platform.runLater(() -> {
+            		this.getHeartBeatPlayer().stop();
             		toNextScene(new Scene3());
             	});
             }, 3000);

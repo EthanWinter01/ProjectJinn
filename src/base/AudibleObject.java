@@ -72,6 +72,7 @@ public class AudibleObject extends BaseObject {
 	public void setMediaPlayer(String audioPath, int pause) {
 		URL audioUrl = ClassLoader.getSystemResource(audioPath);
 	    if (audioUrl != null) {
+	    	this.audioPath = audioPath;
 	        player = new MediaPlayer(new Media(audioUrl.toString())); 
 	        player.setOnEndOfMedia(() -> {
 	        	new Thread(() -> {

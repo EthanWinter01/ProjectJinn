@@ -8,7 +8,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		GameLogic.setStage(primaryStage);
 		
-		Scene2 scene = new Scene2();
+		Scene3 scene = new Scene3();
 		
 		primaryStage.setScene(scene.getOverall()); 
 	    primaryStage.setTitle("Scene");
