@@ -2,14 +2,17 @@ package scenes;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import base.AudibleObject;
 import base.BackgroundAudio;
 import base.BaseObject;
 import base.BaseScene;
 import base.Blinker;
 import base.FadeEffect;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.layout.Background;
+import javafx.util.Duration;
 
 public class Scene6 extends BaseScene {
 	// Fields
@@ -18,7 +21,7 @@ public class Scene6 extends BaseScene {
 	private static final String BG_AUDIO_PATH = "scene6/sound/french-countryside-sunrise-17100.mp3";
 	private ArrayList<Background> backgroundList;
 	private BaseObject eye, alert1, alert2, attend, gradeletter, group_mem, halfeye, head_left, head_mid, head_right, left, mid, right, letterA, showrank, submission;
-		
+	
 	// Constructor
 	public Scene6() {
 		super(BG_PATH);
@@ -185,29 +188,27 @@ public class Scene6 extends BaseScene {
 	}
 	
 	private void screenBlink() {
-		sceneBlinkGeneral(5, List.of(5, 6), new int[]{100, 100},
-			    () -> { 
-			        this.setBackground(backgroundList.get(1));
-			        left.open();
-			        mid.open();
-			        right.open();
-			    });
+		glitchSoundMaker();
+		sceneBlinkGeneral(5, List.of(5, 6), new int[]{100, 100}, () -> { 
+	        this.setBackground(backgroundList.get(1));
+			left.open();
+			mid.open();
+	        right.open();
+		});
 	}
 	
 	private void gradeBlink() {
-		sceneBlinkGeneral(5, List.of(7, 8, 9), new int[]{50, 50, 100},
-			    () -> { 
-			        this.getChildren().add(new FadeEffect(2));
-			        this.setBackground(backgroundList.get(0));
-			    }
-			);
-
+		glitchSoundMaker();
+		sceneBlinkGeneral(5, List.of(7, 8, 9), new int[]{50, 50, 100}, () -> {
+			this.getChildren().add(new FadeEffect(2));
+			this.setBackground(backgroundList.get(0));
+			BackgroundAudio.playAudio(BG_AUDIO_PATH);
+		});
 	}
 	
 	private void sceneBlinkGeneral(int durationSeconds, List<Integer> backgroundIndices, int[] sleepDurations, Runnable finalAction) {
-	    Thread blinkThread = new Thread(() -> {
+		Thread blinkThread = new Thread(() -> {
 	        long endTime = System.currentTimeMillis() + durationSeconds * 1000L;
-
 	        try {
 	            while (System.currentTimeMillis() < endTime) {
 	                for (int i = 0; i < backgroundIndices.size(); i++) {
@@ -228,5 +229,14 @@ public class Scene6 extends BaseScene {
 
 	    blinkThread.setDaemon(true);
 	    blinkThread.start();
+	}
+	
+	private void glitchSoundMaker() {
+		AudibleObject glitch = new AudibleObject("", "scene5/sound/electric_shock.mp3");
+		glitch.playAudio();
+		Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
+            glitch.getMediaPlayer().stop();
+        }));
+		stopTimeline.play();
 	}
 }

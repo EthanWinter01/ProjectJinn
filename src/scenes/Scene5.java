@@ -4,9 +4,8 @@ import base.BackgroundAudio;
 import base.BaseObject;
 import base.BaseScene;
 import base.BlackScreen;
-
-import java.awt.MediaTracker;
-
+import base.Blinker;
+import base.FadeEffect;
 import base.AudibleObject;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -66,7 +65,8 @@ public class Scene5 extends BaseScene {
             ties[i].close();
             ps[i].close();
         }
-
+        ps[6] = new AudibleObject("scene5/object/p7.png", "scene5/sound/ghost6.mp3");
+        ps[6].close();
         for (int i = 0; i < 3; i++) {
             comsmile[i] = new BaseObject("scene5/object/comsmile_"+(i+1)+".png");
             comsmile[i].close();
@@ -192,7 +192,6 @@ public class Scene5 extends BaseScene {
         
         Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             glitchNoise.getMediaPlayer().stop();
-            System.out.println("MediaPlayer stopped!");
         }));
         
         Timeline glitchEffect = new Timeline(
@@ -246,12 +245,6 @@ public class Scene5 extends BaseScene {
 	}
     
     private void setupSceneTransition() {
-        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
-        this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
-        FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
-        sceneFadeIn.setFromValue(1.0);
-        sceneFadeIn.setToValue(0.0);
-        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay));
-        sceneFadeIn.play();
+        this.getChildren().addAll(new Blinker(), new FadeEffect(3));
     }
 }

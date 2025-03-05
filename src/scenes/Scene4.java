@@ -30,6 +30,7 @@ public class Scene4 extends BaseScene {
     private Label countdownLabel;
     private int remainingSeconds;
     private StackPane countdownPane;
+    private boolean opened = false;
 	
 	// Constructor
 	public Scene4() {
@@ -60,10 +61,13 @@ public class Scene4 extends BaseScene {
 
 	@Override
 	protected void setupEventHandlers() {
-		door.setOnMouseClicked(event -> {
+		door.onClick(() -> {
             door.close();
             this.setBackground(next_background);
-            startTextFade(text2, 1);
+            if (!opened) {
+            	opened = true;
+            	startTextFade(text2, 1);
+            }
         });
 		
         for (int i = 0; i < 6; i++)
@@ -73,33 +77,39 @@ public class Scene4 extends BaseScene {
 	
     // Start Count Down Timer
 	private void startCountdown(int seconds) {
-        remainingSeconds = seconds;
-        countdownLabel = new Label(String.valueOf(remainingSeconds));
-        countdownLabel.setFont(Font.font("Arial", 200));
-        countdownLabel.setStyle("-fx-text-fill: white;");
-
-        countdownPane = new StackPane(countdownLabel);
-        countdownPane.setAlignment(Pos.CENTER);
-        countdownPane.setPrefSize(900, 650);
-        countdownPane.setMouseTransparent(true);
-        this.getChildren().add(countdownPane);
-        this.getHeartBeatPlayer().setVolume(1);
-
-        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            remainingSeconds--;
-            if (remainingSeconds >= 0) {
-                countdownLabel.setText(String.valueOf(remainingSeconds));
-            } else {
-                countdownTimeline.stop();
-                this.getChildren().remove(countdownPane);
-                handleTimeout();
-            }
-        }));
-
-        countdownTimeline.setCycleCount(Timeline.INDEFINITE);
-        for (AudibleObject obj : choice) 
-        	obj.open();
-        countdownTimeline.play();
+	        remainingSeconds = seconds;
+	        countdownLabel = new Label(String.valueOf(remainingSeconds));
+	        countdownLabel.setFont(Font.font("Arial", 200));
+	        countdownLabel.setStyle("-fx-text-fill: white;");
+	
+	        countdownPane = new StackPane(countdownLabel);
+	        countdownPane.setAlignment(Pos.CENTER);
+	        countdownPane.setPrefSize(900, 650);
+	        countdownPane.setMouseTransparent(true);
+	        this.getChildren().add(countdownPane);
+	        this.getHeartBeatPlayer().setVolume(1);
+	
+	        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+	            remainingSeconds--;
+	            if (remainingSeconds >= 0) {
+	                countdownLabel.setText(String.valueOf(remainingSeconds));
+	                AudibleObject tick = new AudibleObject("", "scene4/sound/timer_1second.mp3");
+	                tick.playAudio();
+	        		Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event2 -> {
+	                    tick.getMediaPlayer().stop();
+	                }));
+	        		stopTimeline.play();
+	            } else {
+	                countdownTimeline.stop();
+	                this.getChildren().remove(countdownPane);
+	                handleTimeout();
+	            }
+	        }));
+	
+	        countdownTimeline.setCycleCount(Timeline.INDEFINITE);
+	        for (AudibleObject obj : choice) 
+	        	obj.open();
+	        countdownTimeline.play();
     }
 	
 	// Handle Timeout (When Player Fails)
@@ -125,7 +135,6 @@ public class Scene4 extends BaseScene {
         	obj.close();
         countdownTimeline.stop();
         this.getChildren().remove(countdownPane);
-        this.setBackground(next_background);
         transitionToNextScene();
     }
 
@@ -135,7 +144,7 @@ public class Scene4 extends BaseScene {
     		Platform.runLater(() -> {
     			toNextScene(new Scene5());
     		});
-    	}, 3000);
+    	}, 5000);
     }
 
     // Text Fade In & Out Effect
