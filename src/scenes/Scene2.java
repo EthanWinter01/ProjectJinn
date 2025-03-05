@@ -109,7 +109,7 @@ public class Scene2 extends BaseScene {
         if (sceneGuider == 4) {
             updateScene(hi, 6, backgroundList.get(5), cheater);
             if (this.getHeartBeatPlayer() != null) {
-                this.getHeartBeatPlayer().setVolume(0.4);
+                this.getHeartBeatPlayer().setVolume(0.5);
                 this.getHeartBeatPlayer().play();
             }
         }
