@@ -135,7 +135,7 @@ public class Scene3 extends BaseScene {
         optionalghost.playAudio();
 
         FadeTransition ghostFadeOut = new FadeTransition(Duration.seconds(0.001), optionalghost);
-        ghostFadeOut.setDelay(Duration.millis(2000));
+        ghostFadeOut.setDelay(Duration.millis(3000));
         ghostFadeOut.setFromValue(1.0);
         ghostFadeOut.setToValue(0.0);
         ghostFadeOut.setOnFinished(event -> transitionToScene4());
@@ -148,13 +148,15 @@ public class Scene3 extends BaseScene {
         fadeOverlay.setMouseTransparent(false);
         optionalghost.close();
         crack.close();
-        optionalghost.getMediaPlayer().setVolume(0.5);
 
         GameLogic.transition(() -> {
+        	AudibleObject afterFX = new AudibleObject("","scene3/sound/runaway_toilet.mp3");
+            afterFX.playAudio();
         	Platform.runLater(() -> {
         		fadeOverlay.setOpacity(0.0);
         	});
         }, 2000);
+        
         
         GameLogic.transition(() -> {
         	Platform.runLater(() -> {
