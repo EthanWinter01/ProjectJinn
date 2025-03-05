@@ -65,7 +65,7 @@ public class Scene1_2 extends ScenePane {
         }
         
         if (chairClicked && mirrorClicked && blinked && !ghostAppeared) {
-            ghost.setOpacity(1.0);
+            ghost.viewOnly();
             ghost.getMediaPlayer().setStopTime(Duration.seconds(0.5));
             ghost.onClick();
             FadeTransition ghostFadeOut = new FadeTransition(Duration.seconds(0.1),  ghost) ;

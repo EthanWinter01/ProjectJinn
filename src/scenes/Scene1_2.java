@@ -33,6 +33,8 @@ public class Scene1_2 extends BaseScene {
         window = new BaseObject("scene1/object/mirror.png");
 
         getChildren().addAll(window, hands, chair, ghost, busbell, new Blinker(), new FadeEffect());
+        window.close();
+        busbell.close();
         hands.close();
         ghost.close();
     }
@@ -48,6 +50,8 @@ public class Scene1_2 extends BaseScene {
         if (!chairClicked) {
             chairClicked = true;
             sceneBlink(10);
+            chair.close();
+            window.clickOnly();
         }
         checkGhostAppearance();
     }
@@ -57,6 +61,8 @@ public class Scene1_2 extends BaseScene {
             windowClicked = true;
             hands.setOpacity(0.7);
             hands.playAudio();
+            window.close();
+            chair.clickOnly();
         }
     }
 
@@ -72,7 +78,7 @@ public class Scene1_2 extends BaseScene {
 
     private void checkGhostAppearance() {
         if (chairClicked && windowClicked && blinked && !ghostAppeared) {
-            ghost.setOpacity(1.0);
+            ghost.viewOnly();
             ghost.getMediaPlayer().setStopTime(Duration.seconds(0.5));
             ghost.playAudio();
 
@@ -88,9 +94,9 @@ public class Scene1_2 extends BaseScene {
             ghostFadeOut.play();
 
             ghostAppeared = true;
-            busbell.setOpacity(1);
-            window.setOpacity(1);
-            chair.setOpacity(1);
+            busbell.open();
+            window.viewOnly();
+            chair.viewOnly();
         }
     }
 

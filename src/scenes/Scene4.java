@@ -38,6 +38,8 @@ public class Scene4 extends BaseScene {
         initializeObjects();
         setupEventHandlers();
         this.getChildren().addAll(new Blinker(), new FadeEffect());
+        this.getHeartBeatPlayer().setVolume(0.5);
+        this.getHeartBeatPlayer().play();
 	}
 
 	@Override
@@ -81,6 +83,7 @@ public class Scene4 extends BaseScene {
         countdownPane.setPrefSize(900, 650);
         countdownPane.setMouseTransparent(true);
         this.getChildren().add(countdownPane);
+        this.getHeartBeatPlayer().setVolume(1);
 
         countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             remainingSeconds--;
@@ -101,6 +104,7 @@ public class Scene4 extends BaseScene {
 	
 	// Handle Timeout (When Player Fails)
     private void handleTimeout() {
+    	this.getHeartBeatPlayer().stop();
         this.getChildren().add(new BlackScreen());
 
         for (AudibleObject obj : choice) 
@@ -109,13 +113,14 @@ public class Scene4 extends BaseScene {
         if (getHeartBeatPlayer() != null) {
             getHeartBeatPlayer().stop();
         }
-
+        
         new AudibleObject("", "scene1/sound/Jumpscar.mp3").playAudio();
         transitionToNextScene();
     }
 
     // Handle Correct Answer (CTRL-SP)
     private void handleCorrectClick() {
+    	this.getHeartBeatPlayer().stop();
         for (AudibleObject obj : choice) 
         	obj.close();
         countdownTimeline.stop();
