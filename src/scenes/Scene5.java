@@ -7,14 +7,11 @@ import base.BlackScreen;
 import base.Blinker;
 import base.FadeEffect;
 import base.AudibleObject;
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.layout.Background;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import logic.GameLogic;
 
