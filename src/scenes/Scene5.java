@@ -1,239 +1,246 @@
 package scenes;
 
-import java.util.ArrayList;
-
-import base.AudibleObject;
+import base.BackgroundAudio;
 import base.BaseObject;
 import base.BaseScene;
-import base.Blinker;
-import base.FadeEffect;
 import component.BackgroundMusic;
+import base.AudibleObject;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import logic.GameLogic;
 
 public class Scene5 extends BaseScene {
-	// Fields
-	private int sceneGuider = 0;
 	private static final String BG_PATH = "scene5/BG_scene5_1.png";
-	private ArrayList<Background> backgroundList;
-	private ArrayList<BaseObject> ties, ps;
-	private BaseObject blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid, comsmile1, comsmile2, comsmile3, projector1, projector2;
+	private static final String BG_AUDIO_PATH[] = {
+			"scene5/sound/horrorspeed.mp3",
+			"scene5/sound/pasatV2.mp3",
+			"scene6/sound/heartdie.mp3"
+	};
 		
-	// Constructor
-	public Scene5() {
-		super(BG_PATH);
-		initializeBackgrounds();
-		initializeObjects();
-		setupEventHandlers();
-		
-		this.getChildren().addAll(ties);
-		this.getChildren().addAll(ps);
-		this.getChildren().addAll(blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid, 
-								  comsmile1, comsmile2, comsmile3, projector1, projector2, new Blinker(), new FadeEffect(3));
-	}
+    private int sceneGuider = 0;
+    private BaseObject[] ties, comsmile, projector;
+    private AudibleObject[] ps;
+    private BaseObject blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid;
+    private Background[] backgrounds;
 
-	private void initializeBackgrounds() {
-		backgroundList = new ArrayList<Background>();
-		backgroundList.add(getBackground());
-		String[] bg = {"1", "2", "black", "red"};
-		for (String file: bg) {
-			backgroundList.add(createBackground("scene5/BG_scene5_" + file + ".png"));
-		}
-		
-	}
+    public Scene5() {
+        super(BG_PATH);
+        BackgroundAudio.stopAudio();
+        BackgroundAudio.playAudio(BG_AUDIO_PATH[0]);
 
-	@Override
+        initializeBackgrounds();
+        initializeObjects();
+        setupEventHandlers();
+        setupSceneTransition();
+    }
+
+    private void initializeBackgrounds() {
+        String[] bg = {"1", "2", "black", "red"};
+        backgrounds = new Background[bg.length];
+        for (int i = 0; i < bg.length; i++) {
+            backgrounds[i] = createBackground("scene5/BG_scene5_" + bg[i] + ".png");
+        }
+    }
+
+    @Override
 	protected void initializeObjects() {
-		ties = new ArrayList<BaseObject>();
-		ps = new ArrayList<BaseObject>();
-		for (int i=0; i<7; i++) {
-			int k = i + 1;
-			ties.add(createBaseObject("tie" + k));
-			ps.add(createBaseObject("p" + k));
-		}
-		comsmile1 = createBaseObject("comsmile_1");
-		comsmile2 = createBaseObject("comsmile_2");
-		comsmile3 = createBaseObject("comsmile_3");
-		projector1 = createBaseObject("projector1");
-		projector2 = createBaseObject("projector2");
-		blackscreen = createBaseObject("blackscreen");
-		keyboard = createBaseObject("keyboard");
-		monitor = createBaseObject("monitor");
-		mouse = createBaseObject("mouse");
-		timetohavefun = createBaseObject("timetohavefun");
-		welcomestupid = createBaseObject("welcomestupid");
-		
-		hideObjects();
-	}
+        ties = new BaseObject[7];
+        ps = new AudibleObject[7];
+        comsmile = new BaseObject[3];
+        projector = new BaseObject[2];
 
-	@Override
-	protected void setupEventHandlers() {
-		handleThisPane(0);
-		projector1.onClick(() -> handleProjectorClick(1));
-		monitor.onClick(() -> handleMonitorClick(2));
-		blackscreen.onClick(() -> handleBlackscreenClick(3));
-		welcomestupid.onClick(() -> handleWelcomestupidClick(4));
-		timetohavefun.onClick(() -> handleTimeToFunClick(5));
-		setTiesOnClick(6, 11);
-	}
-	
-	// Utility Method
-	private void hideObjects() {
-		for (int i=0; i<7; i++) {
-			ties.get(i).close();
-			ps.get(i).close();
-		}
-		comsmile1.close();
-		comsmile2.close();
-		comsmile3.close();
-		projector1.close();
-		projector2.close();
-		blackscreen.close();
-		keyboard.close();
-		monitor.close();
-		mouse.close();
-		timetohavefun.close();
-		welcomestupid.close();
-		
-	}
-	
-	private void handleThisPane(int expect) {
-		this.setOnMouseClicked(event -> {
-			if (sceneGuider == expect) {
-				projector1.clickOnly();
-				sceneGuider++;
-			}
-		});
-	}
+        for (int i = 0; i < 7; i++) {
+            ties[i] = new BaseObject("scene5/object/tie"+(i+1)+".png");
+            ps[i] = new AudibleObject("scene5/object/p"+(i+1)+".png", "scene5/sound/ghost"+(i+1)+".mp3");
+            ties[i].close();
+            ps[i].close();
+        }
 
-	private void handleProjectorClick(int expect) {
-		if (sceneGuider == expect) {
-			projector1.close();
-			projector2.open();
-			monitor.open();
-			sceneGuider++;
-		}		
-	}
-	
-	private void handleMonitorClick(int expect) {
-		if (sceneGuider == expect) {
-			monitor.close();
-			projector2.close();
-			this.setBackground(backgroundList.get(2));
-			runGlitchEffect();
-			sceneGuider++;
-		}
-	}
-	
-	private void handleBlackscreenClick(int expect) {
-		if (sceneGuider == expect) {
-			blackscreen.close();
-	        welcomestupid.open();
-			sceneGuider++;
-		}
-	}
-	
-	private void handleWelcomestupidClick(int expect) {
-		if (sceneGuider == expect) {
-	        
-	        Timeline sequence = new Timeline(
-	            new KeyFrame(Duration.seconds(1), e -> {
-	                setBackground(backgroundList.get(3)); // Blink black for 0.5 sec
-	            }),
-	            new KeyFrame(Duration.seconds(1.5), e -> {
-	                setBackground(backgroundList.get(4)); //"scene5_red"
-	                BackgroundMusic.stopMusic();
-	                BackgroundMusic.playMusic("scene5/sound/pasatV2.mp3");
-	                sceneGuider++;
-	            })
-	        );
-	        
-	        welcomestupid.close();
-	        timetohavefun.open();
-	        sequence.play();
-	    }
-	}
-	
-	private void handleTimeToFunClick(int expect) {
-		if (sceneGuider == expect) {
-			timetohavefun.viewOnly();
-			for (int i=0; i<7; i++) {
-				ties.get(i).open();
-			}
-			sceneGuider++;
-		}
-	}
+        for (int i = 0; i < 3; i++) {
+            comsmile[i] = new BaseObject("scene5/object/comsmile_" + (i + 1) + ".png");
+            comsmile[i].close();
+        }
 
-	private void setTiesOnClick(int begin, int end) {
-		for (int k=0; k<7; k++) {
-			final int i = k;
-			ties.get(i).onClick(() -> handleTiesClick(i, begin, end));
-		}
-	}
-	
-	private void handleTiesClick(int i, int begin, int end) {
-		if (sceneGuider >= begin && sceneGuider <= end) {
-			ties.get(i).close();
-			ps.get(i).viewOnly();
-			sceneGuider++;
-		} else if (sceneGuider == end+1) {
-			goToNextScene();
-		}
-	}
-	
-    private BaseObject createBaseObject(String name) {
-        return new BaseObject("scene5/object/" + name + ".png");
+        projector[0] = new BaseObject("scene5/object/projector1.png");
+        projector[1] = new BaseObject("scene5/object/projector2.png");
+
+        blackscreen = new BaseObject("scene5/object/blackscreen.png");
+        keyboard = new BaseObject("scene5/object/keyboard.png");
+        monitor = new BaseObject("scene5/object/monitor.png");
+        mouse = new BaseObject("scene5/object/mouse.png");
+        timetohavefun = new BaseObject("scene5/object/timetohavefun.png");
+        welcomestupid = new BaseObject("scene5/object/welcomestupid.png");
+
+        closeObjects(blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid, projector[0], projector[1]);
+        this.getChildren().addAll(ties);
+        this.getChildren().addAll(ps);
+        this.getChildren().addAll(comsmile);
+        this.getChildren().addAll(projector);
+        this.getChildren().addAll(blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid);
+    }
+
+    private void closeObjects(BaseObject... objects) {
+        for (BaseObject obj : objects) 
+        	obj.close();
     }
     
-	private void runGlitchEffect() {
-	    comsmile1.open();
-	    comsmile2.open();
-	    comsmile3.open();
+    @Override
+	protected void setupEventHandlers() {
+        this.setOnMouseClicked(event -> {
+            if (sceneGuider == 0) {
+                projector[0].open();
+                projector[0].setOpacity(0);
+                sceneGuider = 1;
+            }
+        });
+        projector[0].setOnMouseClicked(event -> transitionProjector());
+        monitor.setOnMouseClicked(event -> transitionMonitor());
+        blackscreen.setOnMouseClicked(event -> transitionBlackscreen());
+        welcomestupid.setOnMouseClicked(event -> transitionWelcomestupid());
+        timetohavefun.setOnMouseClicked(event -> transitionTimeToHaveFun());
+        setupTiesClickEvents();
+    }
 
-	    Timeline glitchEffect = new Timeline(
-	        new KeyFrame(Duration.millis(100), e -> {
-	            comsmile1.setVisible(true);
-	            comsmile2.setVisible(false);
-	            comsmile3.setVisible(false);
-	        }),
-	        new KeyFrame(Duration.millis(200), e -> {
-	            comsmile1.setVisible(false);
-	            comsmile2.setVisible(true);
-	            comsmile3.setVisible(false);
-	        }),
-	        new KeyFrame(Duration.millis(300), e -> {
-	            comsmile1.setVisible(false);
-	            comsmile2.setVisible(false);
-	            comsmile3.setVisible(true);
-	        })
-	    );
+    private void transitionProjector() {
+        if (sceneGuider == 1) {
+            projector[0].close();
+            projector[1].open();
+            monitor.open();
+            sceneGuider = 2;
+        }
+    }
 
-	    glitchEffect.setCycleCount(10);
-	    glitchEffect.setOnFinished(e -> {
-	        comsmile1.close();
-	        comsmile2.close();
-	        comsmile3.close();
-	        this.setBackground(backgroundList.get(3));//"scene5_black"
-	        blackscreen.open();
-	    });
+    private void transitionMonitor() {
+        if (sceneGuider == 2) {
+            projector[1].close();
+            monitor.close();
+            setBackground(backgrounds[1]);
+            runGlitchEffect();
+            sceneGuider = 3;
+        }
+    }
 
-	    glitchEffect.play();
+    private void transitionBlackscreen() {
+        if (sceneGuider == 4) {
+            blackscreen.close();
+            welcomestupid.open();
+            sceneGuider = 5;
+        }
+    }
+
+    private void transitionWelcomestupid() {
+        if (sceneGuider == 5) {
+            welcomestupid.close();
+            timetohavefun.open();
+            Timeline sequence = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> setBackground(backgrounds[2])),
+                new KeyFrame(Duration.seconds(1.5), e -> {
+                    setBackground(backgrounds[3]);
+                    BackgroundAudio.stopAudio();
+                    BackgroundAudio.playAudio(BG_AUDIO_PATH[1]);
+                    sceneGuider = 6;
+                })
+            );
+            sequence.play();
+        }
+    }
+
+    private void transitionTimeToHaveFun() {
+        if (sceneGuider == 6) {
+            timetohavefun.close();
+            for (BaseObject tie : ties) tie.open();
+            sceneGuider = 7;
+        }
+    }
+
+    private void setupTiesClickEvents() {
+        for (int i = 0; i < 7; i++) {
+            final int index = i;
+            ties[i].setOnMouseClicked(event -> {
+                ties[index].close();
+                if (sceneGuider >= 7 && sceneGuider < 13) {
+                    ps[index].open();
+                    ps[index].playAudio();
+                    sceneGuider++;
+                } else if (sceneGuider == 13) {
+                    goToNextScene();
+                }
+            });
+        }
+    }
+    
+    private void runGlitchEffect() {
+        comsmile[0].open();
+        comsmile[1].open();
+        comsmile[2].open();
+
+        Timeline glitchEffect = new Timeline(
+            new KeyFrame(Duration.millis(100), e -> {
+                comsmile[0].setVisible(true);
+                comsmile[1].setVisible(false);
+                comsmile[2].setVisible(false);
+            }),
+            new KeyFrame(Duration.millis(200), e -> {
+                comsmile[0].setVisible(false);
+                comsmile[1].setVisible(true);
+                comsmile[2].setVisible(false);
+            }),
+            new KeyFrame(Duration.millis(300), e -> {
+                comsmile[0].setVisible(false);
+                comsmile[1].setVisible(false);
+                comsmile[2].setVisible(true);
+            })
+        );
+
+        glitchEffect.setCycleCount(10);
+        glitchEffect.setOnFinished(e -> {
+            comsmile[0].close();
+            comsmile[1].close();
+            comsmile[2].close();
+            setBackground(backgrounds[2]);
+            blackscreen.open();
+            sceneGuider = 4;
+        });
+
+        glitchEffect.play();
+    }
+
+    private void goToNextScene() {
+	    new Thread(() -> {
+	        try {
+	            Thread.sleep(3000); // Pause for 3 seconds before blackout
+	            Platform.runLater(() -> {
+	                BackgroundMusic.stopMusic();
+	                BackgroundMusic.playMusic(BG_AUDIO_PATH[2]);
+	                Rectangle blackOut = new Rectangle(900, 650, Color.BLACK);
+	                this.getChildren().add(blackOut);
+	            });
+
+	            Thread.sleep(5000); // Wait for 5 seconds on blackout
+	            
+	            Platform.runLater(() -> {
+	                toNextScene(new Scene6());
+	            });
+
+	        } catch (InterruptedException e) {
+	            Thread.currentThread().interrupt();
+	        }
+	    }).start();
 	}
-	
-	private void goToNextScene() {
-        GameLogic.transition(() -> {
-        	new AudibleObject("","scene6/sound/heartdie.mp3").playAudio();
-        }, 50);
-        
-        GameLogic.transition(() -> {
-        	Platform.runLater(() -> {
-        		toNextScene(new Scene6());
-        	});
-        }, 50);
-	}
-	
+    
+    private void setupSceneTransition() {
+        Rectangle fadeOverlay = new Rectangle(900, 650, Color.BLACK);
+        this.getChildren().addAll(fadeOverlay, GameLogic.getBlinker().blackScene);
+        FadeTransition sceneFadeIn = new FadeTransition(Duration.seconds(3), fadeOverlay);
+        sceneFadeIn.setFromValue(1.0);
+        sceneFadeIn.setToValue(0.0);
+        sceneFadeIn.setOnFinished(event -> this.getChildren().remove(fadeOverlay));
+        sceneFadeIn.play();
+    }
 }
