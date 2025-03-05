@@ -62,8 +62,6 @@ public class Scene5 extends BaseScene {
             ties[i].close();
             ps[i].close();
         }
-        ps[6] = new AudibleObject("scene5/object/p7.png", "scene5/sound/ghost6.mp3");
-        ps[6].close();
         for (int i = 0; i < 3; i++) {
             comsmile[i] = new BaseObject("scene5/object/comsmile_"+(i+1)+".png");
             comsmile[i].close();

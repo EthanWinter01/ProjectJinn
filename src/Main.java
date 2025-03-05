@@ -7,10 +7,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		GameLogic.setStage(primaryStage);
-		
-		Scene3 scene = new Scene3();
-		
-		primaryStage.setScene((new SceneStart()).getOverall()); 
+		primaryStage.setScene((new Scene5()).getOverall()); 
 	    primaryStage.setTitle("Scene");
 	    primaryStage.show();
 	    primaryStage.setResizable(false);
