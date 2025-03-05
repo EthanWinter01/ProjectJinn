@@ -10,5 +10,17 @@ public class Scene6 extends BaseScene {
 	public Scene6() {
 		super(BG_PATH);
 	}
+
+	@Override
+	protected void initializeObjects() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void setupEventHandlers() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

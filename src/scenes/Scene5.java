@@ -33,7 +33,7 @@ public class Scene5 extends BaseScene {
 		this.getChildren().addAll(ties);
 		this.getChildren().addAll(ps);
 		this.getChildren().addAll(blackscreen, keyboard, monitor, mouse, timetohavefun, welcomestupid, 
-								  comsmile1, comsmile2, comsmile3, projector1, projector2, new Blinker(), new FadeEffect());
+								  comsmile1, comsmile2, comsmile3, projector1, projector2, new Blinker(), new FadeEffect(3));
 	}
 
 	private void initializeBackgrounds() {

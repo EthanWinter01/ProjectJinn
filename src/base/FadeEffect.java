@@ -12,7 +12,7 @@ public class FadeEffect extends BlackScreen {
 	}
 	
 	public FadeEffect() {
-		fadeStart(3);
+		fadeStart(0);
 	}
 	
 	public void fadeStart(double delay) {
