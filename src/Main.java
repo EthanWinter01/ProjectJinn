@@ -10,7 +10,7 @@ public class Main extends Application {
 		
 		Scene3 scene = new Scene3();
 		
-		primaryStage.setScene(scene.getOverall()); 
+		primaryStage.setScene((new SceneStart()).getOverall()); 
 	    primaryStage.setTitle("Scene");
 	    primaryStage.show();
 	    primaryStage.setResizable(false);
