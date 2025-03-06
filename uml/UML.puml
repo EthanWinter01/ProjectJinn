@@ -1,4 +1,6 @@
 @startuml
+skinparam ortho
+
 class Main [[java:Main]] {
 	+start(primaryStage: Stage): void
 	+{static} main(args: String[]): void
