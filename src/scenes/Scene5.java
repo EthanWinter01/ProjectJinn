@@ -182,7 +182,7 @@ public class Scene5 extends BaseScene {
         comsmile[1].open();
         comsmile[2].open();
 
-        AudibleObject glitchNoise = new AudibleObject("", "scene5/sound/electric_shock.mp3");
+        AudibleObject glitchNoise = new AudibleObject("idiotdot.png", "scene5/sound/electric_shock.mp3");
         glitchNoise.playAudio();
         
         Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {

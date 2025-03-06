@@ -93,7 +93,7 @@ public class Scene4 extends BaseScene {
 	            remainingSeconds--;
 	            if (remainingSeconds >= 0) {
 	                countdownLabel.setText(String.valueOf(remainingSeconds));
-	                AudibleObject tick = new AudibleObject("", "scene4/sound/timer_1second.mp3");
+	                AudibleObject tick = new AudibleObject("idiotdot.png", "scene4/sound/timer_1second.mp3");
 	                tick.playAudio();
 	        		Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event2 -> {
 	                    tick.getMediaPlayer().stop();
@@ -124,7 +124,7 @@ public class Scene4 extends BaseScene {
             getHeartBeatPlayer().stop();
         }
         
-        new AudibleObject("", "scene1/sound/Jumpscar.mp3").playAudio();
+        (new AudibleObject("idiotdot.png", "scene1/sound/Jumpscar.mp3")).playAudio();
         transitionToNextScene();
     }
 

@@ -37,7 +37,7 @@ public class Scene6 extends BaseScene {
 
 	private void initializeBackgrounds() {
 		backgroundList = new ArrayList<Background>();
-		String[] bg = {"end_credit", "BG_scene_Zone"};
+		String[] bg = {"end_credit", "BG_scene_zone"};
 		for (String file: bg) {
 			backgroundList.add(createBackground("scene6/" + file + ".png"));
 		}
@@ -232,7 +232,7 @@ public class Scene6 extends BaseScene {
 	}
 	
 	private void glitchSoundMaker() {
-		AudibleObject glitch = new AudibleObject("", "scene5/sound/electric_shock.mp3");
+		AudibleObject glitch = new AudibleObject("idiotdot.png", "scene5/sound/electric_shock.mp3");
 		glitch.playAudio();
 		Timeline stopTimeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
             glitch.getMediaPlayer().stop();

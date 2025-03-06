@@ -150,7 +150,7 @@ public class Scene3 extends BaseScene {
         crack.close();
 
         GameLogic.transition(() -> {
-        	new AudibleObject("","scene3/sound/runaway_toilet.mp3").playAudio();
+        	(new AudibleObject("idiotdot.png","scene3/sound/runaway_toilet.mp3")).playAudio();
         	Platform.runLater(() -> {
         		fadeOverlay.setOpacity(0.0);
         	});
