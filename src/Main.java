@@ -8,7 +8,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		GameLogic.setStage(primaryStage);
 		primaryStage.setScene((new SceneStart()).getOverall()); 
-	    primaryStage.setTitle("Scene");
+	    primaryStage.setTitle("MIDTERM");
 	    primaryStage.show();
 	    primaryStage.setResizable(false);
 	}	
