@@ -1,0 +1,361 @@
+@startuml
+class Main [[java:Main]] {
+	+start(primaryStage: Stage): void
+	+{static} main(args: String[]): void
+}
+class Application {
+}
+Application <|-- Main
+
+package base {
+	class BackgroundAudio [[java:base.BackgroundAudio]] {
+		-{static} player: MediaPlayer
+		+{static} playAudio(soundFilePath: String): void
+		+{static} stopAudio(): void
+		+{static} pauseAudio(): void
+		+{static} resumeAudio(): void
+		+{static} setAudio(volume: double): void
+	}
+
+	class BaseObject [[java:base.BaseObject]] {
+		-resPath: String
+		+{static} SCENE_WIDTH: int
+		+{static} SCENE_HEIGHT: int
+		+BaseObject(resPath: String)
+		+BaseObject(resPath: String, x: double, y: double)
+		+setPosition(x: double, y: double): void
+		+onClick(eventHandler: Runnable): void
+		+open(): void
+		+viewOnly(): void
+		+clickOnly(): void
+		+close(): void
+		+getResPath(): String
+		+getResPath(local: boolean): String
+		+setResPath(resPath: String): void
+	}
+
+	class AudibleObject [[java:base.AudibleObject]] {
+		-audioPath: String
+		-player: MediaPlayer
+		-isPlaying: boolean
+		-{static} DEFAULT_PAUSE: int
+		+AudibleObject(resPath: String, audioPath: String)
+		+AudibleObject(resPath: String, audioPath: String, pause: int)
+		+playAudio(): void
+		+getResPath(): String
+		+setResPath(audioPath: String): void
+		+getAudioPath(): String
+		+getAudioPath(local: boolean): String
+		+setAudioPath(audioPath: String): void
+		+getMediaPlayer(): MediaPlayer
+		+setMediaPlayer(audioPath: String): void
+		+setMediaPlayer(audioPath: String, pause: int): void
+	}
+	BaseObject <|-- AudibleObject
+
+	class BlackScreen [[java:base.BlackScreen]] {
+		+BlackScreen()
+	}
+
+	class Blinker [[java:base.Blinker]] {
+		-{static} FADE_IN_OPACITY: double
+		-{static} FADE_OUT_OPACITY: double
+		-{static} FADE_IN_DURATION: long
+		-{static} FADE_OUT_DURATION: long
+		+Blinker()
+		-startBlinking(): void
+	}
+	BlackScreen <|-- Blinker
+
+	class FadeEffect [[java:base.FadeEffect]] {
+		-{static} FADE_IN_DURATION: double
+		+FadeEffect(delay: double)
+		+FadeEffect()
+		+fadeStart(delay: double): void
+	}
+	BlackScreen <|-- FadeEffect
+
+	abstract class BaseScene [[java:base.BaseScene]] {
+		#overall: Scene
+		#nextScene: Scene
+		#heartBeatPlayer: MediaPlayer
+		+BaseScene(fileName: String)
+		#{abstract} initializeObjects(): void
+		#{abstract} setupEventHandlers(): void
+		+createBackground(fileName: String): Background
+		#startTextFade(text: BaseObject): void
+		#toNextScene(scene: BaseScene): void
+		-initialHeartBeat(): void
+		+getOverall(): Scene
+		+setOverall(overall: Scene): void
+		+getNextScene(): Scene
+		+setNextScene(nextScene: BaseScene): void
+		+setBackgroundMusic(backgroundMusic: BackgroundAudio): void
+		+getHeartBeatPlayer(): MediaPlayer
+		+setHeartBeatPlayer(heartBeatPlayer: MediaPlayer): void
+	}
+}
+
+package scenes {
+	class SceneStart [[java:scenes.SceneStart]] {
+		-{static} BG_PATH: String
+		-black: Rectangle
+		+SceneStart()
+		#initializeObjects(): void
+		#setupEventHandlers(): void
+	}
+	BaseScene <|-- SceneStart
+
+	class Scene0 [[java:scenes.Scene0]] {
+		-{static} BG_PATH: String
+		-{static} BG_AUDIO_PATH: String
+		-{static} OBJECTS: String[]
+		-{static} SOUND_FILES: String[]
+		+Scene0()
+		+initializeObjects(): void
+		+setupEventHandlers(): void
+	}
+	BaseScene <|-- Scene0
+
+	class Scene1_1 [[java:scenes.Scene1_1]] {
+		-{static} BG_PATH: String
+		+Scene1_1()
+		+initializeObjects(): void
+		+setupEventHandlers(): void
+	}
+	BaseScene <|-- Scene1_1
+
+	class Scene1_2 [[java:scenes.Scene1_2]] {
+		-{static} BG_PATH: String[]
+		-chairClicked: boolean
+		-windowClicked: boolean
+		-ghostAppeared: boolean
+		-blinked: boolean
+		+Scene1_2()
+		#initializeObjects(): void
+		#setupEventHandlers(): void
+		-handleChairClick(): void
+		-handleWindowClick(): void
+		-handleBusbellClick(): void
+		-checkGhostAppearance(): void
+		-sceneBlink(durationSeconds: int): void
+		-toggleVisibility(isVisible: boolean): void
+	}
+	BaseScene <|-- Scene1_2
+
+	class Scene2 [[java:scenes.Scene2]] {
+		-{static} BG_PATH: String
+		-sceneGuider: int
+		-backgroundList: ArrayList<Background>
+		+Scene2()
+		-initializeBackgrounds(): void
+		#initializeObjects(): void
+		-createAudibleObject(name: String, sound: String): AudibleObject
+		-createBaseObject(name: String): BaseObject
+		#setupEventHandlers(): void
+		-updateScene(obj: BaseObject, nextState: int, bg: Background, nextObj: BaseObject): void
+		-handlePrinterBodyClick(): void
+		-handleHiClick(): void
+		-handlePaperClick(): void
+		-handleSmile1Click(): void
+		-handleSmile3Click(): void
+	}
+	BaseScene <|-- Scene2
+
+	class Scene3 [[java:scenes.Scene3]] {
+		-{static} BG_PATH: String
+		-sceneGuider: int
+		-backgroundList: ArrayList<Background>
+		+Scene3()
+		-initializeBackgrounds(): void
+		#initializeObjects(): void
+		-createAudibleObject(name: String, sound: String, pause: int): AudibleObject
+		-createAudibleObject(name: String, sound: String): AudibleObject
+		-createBaseObject(name: String): BaseObject
+		-hideObjects(): void
+		#setupEventHandlers(): void
+		-updateScene(obj: BaseObject, nextState: int, bg: Background, nextObj: BaseObject): void
+		-handleUrinalClick(): void
+		-handleFaucetClick(): void
+		-handleTryMeClick(): void
+		-handleCrackClick(): void
+		-handleFinalSceneTransition(): void
+		-transitionToScene4(): void
+	}
+	BaseScene <|-- Scene3
+
+	class Scene4 [[java:scenes.Scene4]] {
+		-{static} BG_PATH: String
+		-next_background: Background
+		-countdownTimeline: Timeline
+		-countdownLabel: Label
+		-remainingSeconds: int
+		-countdownPane: StackPane
+		-opened: boolean
+		+Scene4()
+		#initializeObjects(): void
+		#setupEventHandlers(): void
+		-startCountdown(seconds: int): void
+		-handleTimeout(): void
+		-handleCorrectClick(): void
+		-transitionToNextScene(): void
+		+startTextFade(t: BaseObject, flag: int): void
+	}
+	BaseScene <|-- Scene4
+
+	class Scene5 [[java:scenes.Scene5]] {
+		-{static} BG_PATH: String
+		-{static} BG_AUDIO_PATH: String[]
+		-sceneGuider: int
+		-backgrounds: Background[]
+		+Scene5()
+		-initializeBackgrounds(): void
+		#initializeObjects(): void
+		-closeObjects(objects: BaseObject[]): void
+		#setupEventHandlers(): void
+		-transitionProjector(): void
+		-transitionMonitor(): void
+		-transitionBlackscreen(): void
+		-transitionWelcomestupid(): void
+		-transitionTimeToHaveFun(): void
+		-setupTiesClickEvents(): void
+		-runGlitchEffect(): void
+		-goToNextScene(): void
+		-setupSceneTransition(): void
+	}
+	BaseScene <|-- Scene5
+
+	class Scene6 [[java:scenes.Scene6]] {
+		-sceneGuider: int
+		-{static} BG_PATH: String
+		-{static} BG_AUDIO_PATH: String
+		-backgroundList: ArrayList<Background>
+		+Scene6()
+		-initializeBackgrounds(): void
+		#initializeObjects(): void
+		#setupEventHandlers(): void
+		-createBaseObject(name: String): BaseObject
+		-hideObjects(): void
+		-handleThisSceneClick(expect: int): void
+		-handleEyeClick(expect: int): void
+		-handelAlertClick(expect: int): void
+		-handleHalfEyeClick(expect: int): void
+		-handleGradeLetterClick(expect: int): void
+		-handleLetterAClick(expect: int): void
+		-closeAndOpen(toClose: BaseObject, toOpen: BaseObject, begin: int, end: int): void
+		-handleHeadClick(expect: int): void
+		-screenBlink(): void
+		-gradeBlink(): void
+		-sceneBlinkGeneral(durationSeconds: int, backgroundIndices: List<Integer>, sleepDurations: int[], finalAction: Runnable): void
+		-glitchSoundMaker(): void
+	}
+	BaseScene <|-- Scene6
+}
+package interfaces {
+	interface Clickable [[java:interfaces.Clickable]] {
+		open(): void
+		viewOnly(): void
+		clickOnly(): void
+		close(): void
+	}
+}
+
+package logic {
+	class GameLogic [[java:logic.GameLogic]] {
+		-{static} gameStage: Stage
+		+{static} getStage(): Stage
+		+{static} setStage(stage: Stage): void
+		+{static} transition(sceneTransitionLogic: Runnable): void
+		+{static} transition(sceneTransitionLogic: Runnable, delayMillis: long): void
+	}
+}
+
+class Stage {}
+Stage <|-- GameLogic
+
+class Pane {}
+Pane <|-- BaseScene
+
+class ImageView {}
+ImageView <|-- BaseObject
+
+class Rectangle {}
+Rectangle <|-- BlackScreen
+
+Clickable <|.. BaseObject
+
+BaseObject --> "1" Blinker : blinker
+
+BaseScene --> "1" BackgroundAudio : backgroundMusic
+BaseScene --> "1" BackgroundAudio : getBackgroundMusic()
+
+Scene0 --> "1" BaseObject : start
+Scene0 --> "*" AudibleObject : noisyBackground
+
+Scene1_1 --> "1" AudibleObject : building
+Scene1_1 --> "1" AudibleObject : bushtree
+Scene1_1 --> "1" AudibleObject : bus
+Scene1_1 --> "1" AudibleObject : doorofbus
+Scene1_1 --> "1" BaseObject : text
+
+Scene1_2 --> "1" AudibleObject : hands
+Scene1_2 --> "1" AudibleObject : ghost
+Scene1_2 --> "1" BaseObject : busbell
+Scene1_2 --> "1" BaseObject : chair
+Scene1_2 --> "1" BaseObject : window
+
+Scene2 --> "1" BaseObject : screenReady
+Scene2 --> "1" BaseObject : smile1
+Scene2 --> "1" BaseObject : smile2
+Scene2 --> "1" BaseObject : smile4
+Scene2 --> "1" BaseObject : text
+Scene2 --> "1" AudibleObject : hi
+Scene2 --> "1" AudibleObject : cheater
+Scene2 --> "1" AudibleObject : scanner
+Scene2 --> "1" AudibleObject : printerBody
+Scene2 --> "1" AudibleObject : paper
+Scene2 --> "1" AudibleObject : smile3
+
+Scene3 --> "1" BaseObject : bg1_sink
+Scene3 --> "1" BaseObject : text
+Scene3 --> "1" BaseObject : urinal
+Scene3 --> "1" AudibleObject : crack
+Scene3 --> "1" AudibleObject : oneghost
+Scene3 --> "1" AudibleObject : faucet
+Scene3 --> "1" AudibleObject : optionalghost
+Scene3 --> "1" AudibleObject : tryMe
+Scene3 --> "1" FadeEffect : fadeOverlay
+
+Scene4 --> "1" BaseObject : text
+Scene4 --> "1" BaseObject : text2
+Scene4 --> "*" AudibleObject : choice
+Scene4 --> "1" AudibleObject : door
+
+Scene5 --> "*" BaseObject : ties
+Scene5 --> "*" BaseObject : comsmile
+Scene5 --> "*" BaseObject : projector
+Scene5 --> "*" AudibleObject : ps
+Scene5 --> "1" BaseObject : keyboard
+Scene5 --> "1" BaseObject : mouse
+Scene5 --> "1" AudibleObject : blackscreen
+Scene5 --> "1" AudibleObject : monitor
+Scene5 --> "1" AudibleObject : timetohavefun
+Scene5 --> "1" AudibleObject : welcomestupid
+
+Scene6 --> "1" BaseObject : eye
+Scene6 --> "1" BaseObject : alert1
+Scene6 --> "1" BaseObject : alert2
+Scene6 --> "1" BaseObject : attend
+Scene6 --> "1" BaseObject : gradeletter
+Scene6 --> "1" BaseObject : group_mem
+Scene6 --> "1" BaseObject : halfeye
+Scene6 --> "1" BaseObject : head_left
+Scene6 --> "1" BaseObject : head_mid
+Scene6 --> "1" BaseObject : head_right
+Scene6 --> "1" BaseObject : left
+Scene6 --> "1" BaseObject : mid
+Scene6 --> "1" BaseObject : right
+Scene6 --> "1" BaseObject : letterA
+Scene6 --> "1" BaseObject : showrank
+Scene6 --> "1" BaseObject : submission
+@enduml
